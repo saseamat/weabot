@@ -1,50 +1,45 @@
-const { getContentType } = require('@adiwajshing/baileys')
 const axios = require('axios').default
+const BodyForm = require('form-data')
+const { exec } = require("child_process")
 const ffmpeg = require('fluent-ffmpeg')
-const FormData = require('form-data')
 const fs = require('fs')
 const moment = require('moment-timezone')
-const { color, fetchUrl, isUrl } = require("./lib/function")
+const { color, fetchUrl, isUrl, getRandom } = require("./lib/function")
 global.config = JSON.parse(fs.readFileSync('./config.json'))
 
 module.exports = async (sock, m) => {
     const { type, isGroup, sender, from } = m
     const body = (type == "buttonsResponseMessage") ? m.message[type].selectedButtonId : (type == "listResponseMessage") ? m.message[type].singleSelectReply.selectedRowId : (type == "templateButtonReplyMessage") ? m.message[type].selectedId : m.text 
-    
     const senderName = m.pushName
     const senderNumber = sender.split('@')[0]
-
     const groupMetadata = isGroup ? await sock.groupMetadata(from) : null
     const groupName = groupMetadata?.subject || ''
     const groupMembers = groupMetadata?.participants || []
     const groupAdmins = groupMembers.filter((v) => v.admin).map((v) => v.id)
-    
+    const isGroupAdmins = groupAdmins.includes(sender)
+    const isBotGroupAdmins = groupAdmins.includes(sock.user?.jid)
+    const isOwner = [sock.user?.jid, ...config.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(sender)
+
     const isCmd = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\\\©^]/.test(body)
     const prefix = isCmd ? body[0] : ''
-    
-    const isGroupAdmins = groupAdmins.includes(sender)
-    const botId = sock.user.id.includes(':') ? sock.user.id.split(':')[0] + '@s.whatsapp.net' : sock.user.id
-    const isBotGroupAdmins = groupMetadata && groupAdmins.includes(botId)
-    const isOwner = config.owner.includes(sender)
-
     const command = isCmd ? body.slice(1).trim().split(' ').shift().toLowerCase() : ''
     const quoted = m.quoted ? m.quoted : m
     const mime = (quoted.msg || m.msg).mimetype
-    // const isMedia = /image|video|sticker|audio/.test(mime)
+    const isMedia = /image|video|sticker|audio/.test(mime)
     const budy = (typeof m.text == "string" ? m.text : "")
     const args = body.trim().split(' ').slice(1)
-    const full_args = body.replace(command, '').slice(1).trim()
+    const fargs = body.replace(command, '').slice(1).trim()
+    const ar = args.map((v) => v.toLowerCase())
     const text = q = args.join(" ")    
-    const time = moment().tz('Asia/Jakarta').format('HH:mm:ss')
-
-    if (config.options.autoRead) await sock.sendReadReceipt(from, sender, [m.id])
-    if (config.options.self && !isOwner && !m.fromMe) return
+    const time = moment().tz(config.timezone).format('HH:mm:ss')
 
     if (!isGroup && !isCmd) console.log(color(`[ ${time} ]`, 'white'), color('[ PRIVATE ]', 'yellow'), color(body.slice(0, 50), 'white'), 'from', color(senderNumber, 'yellow'))
     if (isGroup && !isCmd) console.log(color(`[ ${time} ]`, 'white'), color('[  GROUP  ]', 'yellow'), color(body.slice(0, 50), 'white'), 'from', color(senderNumber, 'yellow'), 'in', color(groupName, 'yellow'))
     if (!isGroup && isCmd) console.log(color(`[ ${time} ]`, 'white'), color('[ COMMAND ]', 'yellow'), color(body, 'white'), 'from', color(senderNumber, 'yellow'))
     if (isGroup && isCmd) console.log(color(`[ ${time} ]`, 'white'), color('[ COMMAND ]', 'yellow'), color(body, 'white'), 'from', color(senderNumber, 'yellow'), 'in', color(groupName, 'yellow'))
 
+    if (config.options.self && !isOwner && !m.fromMe) return
+    
     switch (command) {
 
         // ANIMEWEB COMMNAND
@@ -59,7 +54,6 @@ module.exports = async (sock, m) => {
             sock.sendText(m.from, caption, m)
         }
         break
-        
         case 'doujindesu': {
             if (isUrl(text)) {
                 if (!q) return m.reply(`Example: ${prefix + command} url`)
@@ -106,7 +100,6 @@ module.exports = async (sock, m) => {
             }
         }
         break
-        
         case 'kiryuu': {
             if (!q) return m.reply(`Example: ${prefix + command} query`)
             let fetch = await fetchUrl(global.api("zenz", "/animeweb/kiryuu", { query: text }, "apikey"))
@@ -120,7 +113,6 @@ module.exports = async (sock, m) => {
             sock.sendFile(m.from, fetch.result[0].manga_thumb, "", m, { caption })
         }
         break
-
         case 'kissmanga': {
             if (!q) return m.reply(`Example: ${prefix + command} query`)
             let fetch = await fetchUrl(global.api("zenz", "/animeweb/kissmanga", { query: text }, "apikey"))
@@ -132,7 +124,6 @@ module.exports = async (sock, m) => {
             sock.sendText(m.from, caption, m)
         }
         break
-
         case 'klikmanga': {
             if (!q) return m.reply(`Example: ${prefix + command} query`)
             let fetch = await fetchUrl(global.api("zenz", "/animeweb/klikmanga", { query: text }, "apikey"))
@@ -150,7 +141,6 @@ module.exports = async (sock, m) => {
             sock.sendFile(m.from, fetch.result[0].manga_thumb, "", m, { caption })
         }
         break
-
         case 'komikstation': {
             if (!q) return m.reply(`Example: ${prefix + command} query`)
             let fetch = await fetchUrl(global.api("zenz", "/animeweb/komikstation", { query: text }, "apikey"))
@@ -163,7 +153,6 @@ module.exports = async (sock, m) => {
             sock.sendFile(m.from, fetch.result[0].manga_thumb, "", m, { caption })
         }
         break
-
         case 'mangatoon': {
             if (!q) return m.reply(`Example: ${prefix + command} query`)
             let fetch = await fetchUrl(global.api("zenz", "/animeweb/mangatoon", { query: text }, "apikey"))
@@ -176,7 +165,6 @@ module.exports = async (sock, m) => {
             sock.sendFile(m.from, i.thumb, "", m, { caption })
         }
         break
-
         case 'komikstation': {
             if (text.toLowerCase() === "random") {
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/nekopoi/random", {}, "apikey"))
@@ -217,7 +205,6 @@ module.exports = async (sock, m) => {
             }
         }
         break
-
         case 'nhentai': {
             if (!q) return m.reply(`Example: ${prefix + command} query`)
             let fetch = await fetchUrl(global.api("zenz", "/animeweb/nhentai", { query: text }, "apikey"))
@@ -255,6 +242,41 @@ module.exports = async (sock, m) => {
                 if (isUrl(text)) sock.sendFile(m.from, isUrl(text)[0], "", m, { asSticker: true, author: config.exif.author, packname: config.exif.packname, categories: ['😄','😊'] })
                 else m.reply('No Url Match')
             } else {
+                return m.reply(`Reply to Supported media With Caption ${prefix + command}`, m.from, { quoted: m })
+            }
+        }
+        break
+        case 'toimg': case 'toimage': {
+            if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command}`)
+            if (/image|video|sticker/.test(mime)) {
+                let download = await sock.downloadAndSaveMediaMessage(quoted)
+                let ran = getRandom('png')
+                exec(`ffmpeg -i ${download} ${ran}`, (err) => {
+                    fs.unlinkSync(download)
+                    if (err) return m.reply('Error')
+                    buffer = fs.readFileSync(ran)
+                    sock.sendFile(m.from, buffer, "", m)
+                    fs.unlinkSync(ran)
+                })
+            } else {
+                return m.reply(`Reply to Supported media With Caption ${prefix + command}`, m.from, { quoted: m })
+            }
+        }
+        break
+        case 'tovideo': case 'tomedia': {
+            if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command}`)
+            if (/image|video|sticker/.test(mime)) {
+                let download = await sock.downloadMediaMessage(quoted)
+                const form = new BodyForm()
+                form.append('sampleFile', download, { filename: getRandom('webp') })
+                axios.post(global.api("zenz", "/convert/webp-to-mp4", {}, "apikey"), form.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${form._boundary}`}
+                }).then(({ data }) => {
+                    sock.sendFile(m.from, data.result, "", m, { caption: 'Convert Sticker Gif To Video' })
+                })
+            } else if (isUrl(text)) {
+                let fetch = await fetchUrl(global.api("zenz", "/convert/webp-to-mp4", { url: isUrl(text)[0] }, "apikey"))
+                sock.sendFile(m.from, fetch.result, "", m, { caption: 'Convert Sticker Gif To Video' })
+            }   else {
                 return m.reply(`Reply to Supported media With Caption ${prefix + command}`, m.from, { quoted: m })
             }
         }

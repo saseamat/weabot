@@ -4,9 +4,8 @@
       "apikey": "YOURAPIKEY"
     },
     "options": {
-      "autoRead": false,
+      "autoRead": true,
       "self": false,
-      "mute": false,
       "limitCount": 20,
       "limitGame": 20
     },
@@ -15,7 +14,7 @@
       "author": "https://zenzapi.xyz"
     },
     "owner": [
-      "62812XXXX@s.whatsapp.net"
+      "62812XXX"
     ],
     "timezone": "Asia/Jakarta",
     "footer": "Powered by https://zenzapis.xyz"

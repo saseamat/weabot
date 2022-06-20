@@ -1,8 +1,10 @@
 const P = require ('pino')
 const { Boom } = require ('@hapi/boom')
-const { default: makeWASocket, delay, DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, MessageRetryMap, useMultiFileAuthState } = require ('@adiwajshing/baileys')
+const { default: makeWASocket, delay, DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, MessageRetryMap, useMultiFileAuthState, jidNormalizedUser } = require ('@adiwajshing/baileys')
 const { serialize, WAConnection } = require ('./lib/simple')
 const messageHandler = require('./killua')
+const express = require('express')
+const app = express()
 
 const store = makeInMemoryStore({ logger: P().child({ level: 'silent', stream: 'store' }) })
 store.readFromFile('./database/baileys_store_multi.json')
@@ -48,12 +50,9 @@ const connect = async() => {
 
         if (!m.message) return
         if (m.key && m.key.remoteJid == "status@broadcast") return
-        messageHandler(sock,  m)
 
-		// if(!m.key.fromMe) {
-		// 	await sock.sendReadReceipt(msg.key.remoteJid, msg.key.participant, [msg.key.id])
-		// 	await sendMessageWTyping({ text: 'Hello there!' }, msg.key.remoteJid)
-		// }
+		if (config.options.autoRead) await sock.sendReadReceipt(m.key.remoteJid, m.key.participant, [m.key.id])
+        messageHandler(sock,  m)
 	})
 
 	sock.ev.on('connection.update', async(update) => {
@@ -75,8 +74,19 @@ const connect = async() => {
 
 	// listen for when the auth credentials is updated
 	sock.ev.on('creds.update', saveCreds)
+	if (sock.user && sock.user?.id) sock.user.jid = jidNormalizedUser(sock.user?.id)
 
 	return sock
 }
+
+app.get('/', async (req, res) => {
+	const { version, isLatest } = await fetchLatestBaileysVersion()
+	res.send(`using WA v${version.join('.')}, isLatest: ${isLatest}`)
+})
+
+const { PORT = 8080, LOCAL_ADDRESS = '0.0.0.0' } = process.env
+app.listen(PORT, LOCAL_ADDRESS, () => {
+    console.log('server activated listening at http://localhost:8080')
+})
 
 connect()
