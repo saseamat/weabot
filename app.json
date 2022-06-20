@@ -1,0 +1,21 @@
+{
+  "name": "weabot",
+  "description": "",
+  "repository": "",
+  "logo": "",
+  "keywords": ["weabot"],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+    }
+  ],
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
+}
