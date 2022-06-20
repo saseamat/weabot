@@ -27,11 +27,21 @@ const connect = async() => {
         logger: P({ level: 'silent' }),
         printQRInTerminal: true,
         auth: state,
+		connectTimeoutMs: 60000,
+		keepAliveIntervalMs: 20000,
         msgRetryCounterMap,
     }
     const sock = new WAConnection(makeWASocket(connOptions))
 
     store.bind(sock.ev)
+
+	sock.ev.on('chats.set', () => {
+		console.log('got chats', store.chats.all())
+	})
+	
+	sock.ev.on('contacts.set', () => {
+		console.log('got contacts', Object.values(store.contacts))
+	})
 
 	const sendMessageWTyping = async(msg, jid) => {
 		await sock.presenceSubscribe(jid)
