@@ -5,6 +5,22 @@ global.group = require("./data/group")
 global._user = JSON.parse(fs.readFileSync("./database/user.json"))
 global._group = JSON.parse(fs.readFileSync("./database/group.json"))
 
+global.config = JSON.parse(fs.readFileSync('./config.json'))
+global.siapakah = {}
+global.caklontong = {}
+global.family100 = {}
+global.tebakkalimat = {}
+global.tebakkata = {}
+global.asahotak = {}
+global.susunkata = {}
+global.tebakbendera = {}
+global.tebakgambar = {}
+global.tebakkabupaten = {}
+global.tebaklagu = {}
+global.tekateki = {}
+global.tebaklirik = {}
+global.tebaktebakan = {}
+
 global.mess = (type, m) => {
     let msg = {
         wait: 'Wait, in progress',

@@ -14,16 +14,14 @@ global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in config.
 
 // start a connection
 const connect = async() => {
-	const { state, saveState } = useSingleFileAuthState('./session/session.json')
+	const { state, saveCreds } = await useMultiFileAuthState('./session/baileys_auth_info')
 	const { version, isLatest } = await fetchLatestBaileysVersion()
 	console.log(`using WA v${version.join('.')}, isLatest: ${isLatest}`)
 	let connOptions = {
         version,
         logger: P({ level: 'silent' }),
         printQRInTerminal: true,
-        auth: state,
-		connectTimeoutMs: 60000,
-		keepAliveIntervalMs: 20000
+        auth: state
     }
     const sock = new WAConnection(makeWASocket(connOptions))
 
@@ -65,7 +63,7 @@ const connect = async() => {
 	})
 
 	// listen for when the auth credentials is updated
-	sock.ev.on('creds.update', saveState)
+	sock.ev.on('creds.update', saveCreds)
 	if (sock.user && sock.user?.id) sock.user.jid = jidNormalizedUser(sock.user?.id)
 
 	return sock
