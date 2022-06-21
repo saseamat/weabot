@@ -1,35 +1,29 @@
 const P = require ('pino')
 const { Boom } = require ('@hapi/boom')
-const { default: makeWASocket, delay, DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, MessageRetryMap, useMultiFileAuthState, jidNormalizedUser } = require ('@adiwajshing/baileys')
+const { default: makeWASocket, delay, DisconnectReason, fetchLatestBaileysVersion, makeInMemoryStore, useMultiFileAuthState, useSingleFileAuthState,  jidNormalizedUser } = require ('@adiwajshing/baileys')
 const { serialize, WAConnection } = require ('./lib/simple')
 const messageHandler = require('./killua')
-const express = require('express')
-const app = express()
 
 const store = makeInMemoryStore({ logger: P().child({ level: 'silent', stream: 'store' }) })
-store.readFromFile('./database/baileys_store_multi.json')
+store.readFromFile('./session/baileys_store_multi.json')
 setInterval(() => {
-	store.writeToFile('./database/baileys_store_multi.json')
-}, 10_000)
+	store.writeToFile('./session/baileys_store_multi.json')
+}, 10000)
 
 global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in config.APIs ? config.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: config.APIs.apikey } : {}) })) : '')
 
 // start a connection
 const connect = async() => {
-	const { state, saveCreds } = await useMultiFileAuthState('./database/baileys_auth_info')
+	const { state, saveState } = useSingleFileAuthState('./session/session.json')
 	const { version, isLatest } = await fetchLatestBaileysVersion()
 	console.log(`using WA v${version.join('.')}, isLatest: ${isLatest}`)
-    class msgRetryCounterMap {
-        MessageRetryMap = {}
-    }
 	let connOptions = {
         version,
         logger: P({ level: 'silent' }),
         printQRInTerminal: true,
         auth: state,
 		connectTimeoutMs: 60000,
-		keepAliveIntervalMs: 20000,
-        msgRetryCounterMap,
+		keepAliveIntervalMs: 20000
     }
     const sock = new WAConnection(makeWASocket(connOptions))
 
@@ -42,18 +36,6 @@ const connect = async() => {
 	sock.ev.on('contacts.set', () => {
 		console.log('got contacts', Object.values(store.contacts))
 	})
-
-	const sendMessageWTyping = async(msg, jid) => {
-		await sock.presenceSubscribe(jid)
-		await delay(500)
-
-		await sock.sendPresenceUpdate('composing', jid)
-		await delay(2000)
-
-		await sock.sendPresenceUpdate('paused', jid)
-
-		await sock.sendMessage(jid, msg)
-	}
 
 	sock.ev.on('messages.upsert', async (chatUpdate) => {
         const m = serialize(sock, chatUpdate.messages[0])
@@ -83,20 +65,10 @@ const connect = async() => {
 	})
 
 	// listen for when the auth credentials is updated
-	sock.ev.on('creds.update', saveCreds)
+	sock.ev.on('creds.update', saveState)
 	if (sock.user && sock.user?.id) sock.user.jid = jidNormalizedUser(sock.user?.id)
 
 	return sock
 }
-
-app.get('/', async (req, res) => {
-	const { version, isLatest } = await fetchLatestBaileysVersion()
-	res.send(`using WA v${version.join('.')}, isLatest: ${isLatest}`)
-})
-
-const { PORT = 8080, LOCAL_ADDRESS = '0.0.0.0' } = process.env
-app.listen(PORT, LOCAL_ADDRESS, () => {
-    console.log('server activated listening at http://localhost:8080')
-})
 
 connect()
