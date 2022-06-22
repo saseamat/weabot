@@ -19,7 +19,18 @@ const addUser = (userId, name, _db) => {
         }
     })
     if (position === false) {
-        const obj = { id: userId, verified: false, name: name, time: time, limit: 0, balance: 0, premium: false }
+        const obj = { 
+			id: userId, 
+			verified: false, 
+			name: name, 
+			time: time, 
+			limit: 0,
+			limitgame: 0,
+			balance: 0, 
+			premium: false ,
+			xp: 0,
+			level: 0
+		}
         _db.push(obj)
         fs.writeFileSync('./database/user.json', JSON.stringify(_db, null, 4))
         return false
