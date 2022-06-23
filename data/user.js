@@ -27,7 +27,7 @@ const addUser = (userId, name, _db) => {
 			limit: 0,
 			limitgame: 0,
 			balance: 0, 
-			premium: false ,
+			premium: false,
 			xp: 0,
 			level: 0
 		}
@@ -98,7 +98,59 @@ const getLimit = (userId, _db) => {
 	} else {
 	   return _db[pos].limit
 	}
- }
+}
+
+// LIMITGAME USERDATA
+const isLimitGame = (userId, limitGame, _db) => {
+	let found = false
+	for (let i of _db) {
+		if (i.id === userId) {
+		   if (i.limitgame >= limitGame) {
+			  found = true
+			  return true
+		   } else {
+			  found = true
+			  return false
+		   }
+		}
+	 }
+	if (found === false) {
+		const obj = { id: userId, limitgame: 0 }
+		_db.push(obj)
+		fs.writeFileSync("./database/user.json", JSON.stringify(_db, null, 4))
+		return false
+	}
+}
+const limitGameAdd = (userId, _db) => {
+	let found = false
+	Object.keys(_db).forEach((i) => {
+		if (_db[i].id === userId) {
+			found = i
+		}
+	})
+	if (found !== false) {
+		_db[found].limitgame += 1
+		fs.writeFileSync("./database/user.json", JSON.stringify(_db, null, 4))
+	}
+}
+const getLimitGame = (userId, _db) => {
+	let pos = null
+	let found = false
+	Object.keys(_db).forEach((i) => {
+	   if (_db[i].id === userId) {
+		  pos = i
+		  found = true
+	   }
+	})
+	if (found === false && pos === null) {
+	   const obj = { id: userId, limitgame: 0 }
+	   _db.push(obj)
+	   fs.writeFileSync("./database/user.json", JSON.stringify(_db, null, 4))
+	   return 0
+	} else {
+	   return _db[pos].limitgame
+	}
+}
 
 // BALANCE USERDATA
 const addBalance = (userId, amount, _db) => {
@@ -213,6 +265,7 @@ const expiredCheck = (killua, m, _db) => {
 cron.schedule('0 0 * * *', () => {
 	Object.keys(_user).forEach((i) => {
 		_user[i].limit = 0
+		_user[i].limitgame = 0
 		fs.writeFileSync("./database/user.json", JSON.stringify(_user, null, 4))
 	})
 	console.log('Resetting user limit...')
@@ -227,6 +280,9 @@ module.exports = {
 	isLimit,
 	limitAdd,
 	getLimit,
+	isLimitGame,
+	limitGameAdd,
+	getLimitGame,
 	addBalance,
 	getBalance,
 	addPremiumUser,

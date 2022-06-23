@@ -34,10 +34,6 @@ module.exports = async (sock, m) => {
         const isAfkOn = afk.checkAfkUser(m.sender, _afk) 
         const isLevelingOn = group.cekLeveling(m.rom, _group)
 
-        user.expiredCheck(sock, m, _user)
-        user.addUser(m.sender, m.pushName, _user)
-        if (isGroup) group.addGroup(m.from)
-
         const isCmd = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\\\©^]/.test(body) && sock.sendPresenceUpdate('composing', from)
         const prefix = isCmd ? body[0] : ''
         const command = isCmd ? body.slice(1).trim().split(' ').shift().toLowerCase() : ''
@@ -59,8 +55,6 @@ module.exports = async (sock, m) => {
         const mention = typeof(mentionByTag) == 'string' ? [mentionByTag] : mentionByTag
         mention != undefined ? mention.push(mentionByreply) : []
         const mentionUser = mention != undefined ? mention.filter(n => n) : [] 
-        
-        if (config.options.self && !isOwner && !m.fromMe) return
 
         if (asahotak.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = asahotak[m.sender.split('@')[0]]
@@ -162,28 +156,37 @@ module.exports = async (sock, m) => {
             } else m.reply('*Jawaban Salah!*')
         } 
 
-        const levelRole = level.getLevelingLevel(m.sender, _user)
-        var role = 'Warrior'
-        if (levelRole <= 10) {
-            role = 'Warrior'
-        } else if (levelRole <= 20) {
-            role = 'Elite'
-        } else if (levelRole <= 30) {
-            role = 'Master'
-        } else if (levelRole <= 40) {
-            role = 'Grand Master'
-        } else if (levelRole <= 50) {
-            role = 'Epic'
-        } else if (levelRole <= 60) {
-            role = 'Epical Abadi'
-        } else if (levelRole <= 70) {
-            role = 'Epical Glory'
-        } else if (levelRole <= 80) {
-            role = 'Legends'
-        } else if (levelRole <= 90) {
-            role = 'Mythic'
-        } else if (levelRole >= 100) {
-            role = `Mythical Glory`
+        user.expiredCheck(sock, m, _user)
+        if (isGroup) group.addGroup(m.from)
+
+        if (isCmd && !m.key.fromMe) {
+
+            rpg.addRpg(m.sender, _rpg)
+            user.addUser(m.sender, m.pushName, _user)
+
+            const levelRole = level.getLevelingLevel(m.sender, _user)
+            var role = 'Warrior'
+            if (levelRole <= 10) {
+                role = 'Warrior'
+            } else if (levelRole <= 20) {
+                role = 'Elite'
+            } else if (levelRole <= 30) {
+                role = 'Master'
+            } else if (levelRole <= 40) {
+                role = 'Grand Master'
+            } else if (levelRole <= 50) {
+                role = 'Epic'
+            } else if (levelRole <= 60) {
+                role = 'Epical Abadi'
+            } else if (levelRole <= 70) {
+                role = 'Epical Glory'
+            } else if (levelRole <= 80) {
+                role = 'Legends'
+            } else if (levelRole <= 90) {
+                role = 'Mythic'
+            } else if (levelRole >= 100) {
+                role = `Mythical Glory`
+            }
         }
 
         if (isGroup && !level.isGained(m.sender) && isLevelingOn && isCmd && !m.key.fromMe) {
@@ -222,6 +225,8 @@ module.exports = async (sock, m) => {
                 m.reply(afkDone)
             }
         }
+        
+        if (config.options.self && !isOwner && !m.fromMe) return
         
         switch (command) {
 
@@ -1235,6 +1240,8 @@ module.exports = async (sock, m) => {
             // ENTERTAINMENT COMMNAND
             case 'asahotak': {
                 if (asahotak.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/asahotak", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
@@ -1250,6 +1257,8 @@ module.exports = async (sock, m) => {
             break
             case 'caklontong': {
                 if (caklontong.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/caklontong", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
@@ -1265,6 +1274,8 @@ module.exports = async (sock, m) => {
             break
             case 'family100': {
                 if (family100.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/family100", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal} ?\nPilih Salah Satu Dari ${result.jawaban.length} Jawaban\n\nWaktu : 30s\n`, m).then(() => {
@@ -1292,6 +1303,8 @@ module.exports = async (sock, m) => {
             break
             case 'siapakah': {
                 if (siapakah.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/siapakah", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
@@ -1320,6 +1333,8 @@ module.exports = async (sock, m) => {
             break
             case 'susunkata': {
                 if (susunkata.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/susunkata", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\nTipe: ${result.tipe}\n\nWaktu : 30s`, m).then(() => {
@@ -1335,6 +1350,8 @@ module.exports = async (sock, m) => {
             break
             case 'tebakbendera': {
                 if (tebakbendera.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakbendera", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendFile(m.from, result.img, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\n\nDeskripsi: ${result.flag}\nWaktu : 30s`}).then(() => {
@@ -1350,6 +1367,8 @@ module.exports = async (sock, m) => {
             break
             case 'tebakgambar': {
                 if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakgambar", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendFile(m.from, result.img, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\n\nDeskripsi: ${result.deskripsi}\n\nWaktu : 30s`}).then(() => {
@@ -1365,6 +1384,8 @@ module.exports = async (sock, m) => {
             break
             case 'tebakkabupaten': {
                 if (tebakkabupaten.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkabupaten", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendFile(m.from, result.url, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\nWaktu : 30s`}).then(() => {
@@ -1381,6 +1402,8 @@ module.exports = async (sock, m) => {
             break
             case 'tebakkalimat': {
                 if (tebakkalimat.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkalimat", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
@@ -1396,6 +1419,8 @@ module.exports = async (sock, m) => {
             break
             case 'tebakkata': {
                 if (tebakkata.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkata", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
@@ -1411,6 +1436,8 @@ module.exports = async (sock, m) => {
             break
             case 'tebaklagu': {
                 if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl("https://hisoka-morou.netlify.app/assets/database/tebaklagu.json")
                 let result = await fetch[Math.floor(Math.random() * fetch.length)]
                 sock.sendMessage(m.from, { audio: { url: result.link_song }, mimetype: "audio/mpeg", fileName: "???" }, { quoted: m }).then(() => {
@@ -1426,6 +1453,8 @@ module.exports = async (sock, m) => {
             break
             case 'tebaklirik': {
                 if (tebaklirik.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebaklirik", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
@@ -1441,6 +1470,8 @@ module.exports = async (sock, m) => {
             break
             case 'tebaktebakan': {
                 if (tebaktebakan.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebaktebakan", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
@@ -1457,6 +1488,8 @@ module.exports = async (sock, m) => {
             break
             case 'tekateki': {
                 if (tekateki.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tekateki", {}, "apikey"))
                 let result = await fetch.result
                 sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
@@ -2094,6 +2127,7 @@ module.exports = async (sock, m) => {
             break
             case 'premium': case 'prem': {
                 if (!isOwner) return global.mess("owner", m)
+                if (!isGroup) return global.mess("group", m)
                 if (args.length < 2) return m.reply(`Example: ${prefix + command} add @tag/62812xxx 30d\nExample: ${prefix + command} del @tag/62812xxx`)
                 if (ar[0] === 'add') {
                     if (m.mentions.length !== 0) {
@@ -2925,6 +2959,16 @@ module.exports = async (sock, m) => {
 
             // TEXTMAKER COMMNAND
             // USERS COMMNAND
+            case 'inv': case 'tas': case 'inventory': {
+                const balance = user.getBalance(m.sender, _user)
+                const fish = rpg.getIkan(m.sender, _rpg)
+                const batu = rpg.getBatu(m.sender, _rpg)
+                const permata = rpg.getPermata(m.sender, _rpg)
+                const emas = rpg.getEmas(m.sender, _rpg)
+                const berlian = rpg.getBerlian(m.sender, _rpg)
+                m.reply(zenz.inventory(senderName, balance, fish, batu, permata, emas, berlian))
+            }
+			break
             case 'afk': {
 			if (!isGroup) return global.mess("group", m)
             if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
@@ -2937,15 +2981,10 @@ module.exports = async (sock, m) => {
             }
             break
             case 'limit': case 'ceklimit': {
-                if (m.mentions.length !== 0) {
-                    m.reply(`Limit left: ${user.checkPremiumUser(m.mentions[0], _user) ? "Unlimited" : `${user.getLimit(m.mentions[0], _user)} / ${config.options.limitCount} Max\nLimit direset tiap pukul 00:00 WIB\n`
-                    }\nBalance : $${user.getBalance(m.mentions[0],_user)}`)
-                } else {
-                    m.reply(`Limit left: ${user.checkPremiumUser(m.sender, _user) ? "Unlimited" : `${user.getLimit(m.sender, _user)} / ${config.options.limitCount} Max\nLimit direset tiap pukul 00:00 WIB\n`
-                    }\nBalance : $${user.getBalance(m.sender, _user)}`)
-                }
+			    if (isPremium || isOwner) return m.reply(`Limit: Unlimited\nLimit Game: ${user.getLimitGame(m.sender, _user)} / ${config.options.limitGame} Max\n\nBalance : ${user.getBalance(m.sender, _user)}`)
+			    m.reply(`Limit left: ${user.getLimit(m.sender, _user)} / ${config.options.limitCount} Max\nLimit Game: ${user.getLimitGame(m.sender, _user)} / ${config.options.limitGame} Max\nBalance : ${user.getBalance(m.sender, _user)}\n\n_Limit direset tiap pukul 00:00_`)
             }
-            break
+			break
             case 'cekpremium': case 'cekprem': {
                 if (!isPremium) return global.mess("premium", m)
                 let cekprem = require("parse-ms")((await user.getPremiumExpired(m.sender, _user)) - Date.now())
@@ -3127,6 +3166,73 @@ module.exports = async (sock, m) => {
                 //sock.sendFile(m.from, fetch.result[0].img, "", m, { caption }) yg gambarnya kena internet positif
                 sock.sendText(m.from, caption, m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
+
+            // BOT FEATURE
+            case 'mancing': {
+                if (mancing.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Pancingan Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
+                m.reply('Sedang Memancing, silahkan tunggu..')
+
+                mancing[sender.split('@')[0]] = + new Date
+                await sleep(Math.floor(10000 + Math.random() * 50000))
+
+                if (mancing.hasOwnProperty(m.sender.split('@')[0])) {
+                    const bahan = ['🐟','🐠','🐡'] 
+                    const bahan_ = bahan[Math.floor(Math.random() * bahan.length)]
+                    const ditangkap = Math.ceil(Math.random() * 10)
+
+                    const result = ["BAHAN","ZONK"]
+                    const hasil = result[Math.floor(Math.random() * result.length)]
+                    if (hasil == "BAHAN" ) {
+                        rpg.addIkan(sender, ditangkap, _rpg)
+                        m.reply(`Hasil Tangkapan Ikan ${bahan_}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - mancing[m.sender.split('@')[0]])}`)
+                    } else if(hasil == "ZONK") {
+                        m.reply('Anda Tewas Dimakan Hiu Dan Tidak Mendapatkan Ikan')
+                    } else {
+                        m.reply("404")
+                    }
+                    delete mancing[sender.split('@')[0]]
+                }
+            }
+            break
+            case 'nambang': {
+                if (nambang.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Tambangan Yang Belum Diselesaikan!")
+                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                user.limitGameAdd(m.sender, _user)
+                m.reply('Sedang Menambang, silahkan tunggu..')
+
+                nambang[sender.split('@')[0]] = + new Date
+                await sleep(Math.floor(10000 + Math.random() * 50000))
+
+                if (nambang.hasOwnProperty(m.sender.split('@')[0])) {
+                    const result =["🗿","💎","🪙","💍","ZONK"]
+                    const hasil = result[Math.floor(Math.random() * result.length)]
+                    if (hasil == "🗿" ) {
+                        const ditangkap = Math.ceil(Math.random() * 50)
+                        rpg.addBatu(sender, ditangkap, _rpg)
+                        m.reply(`Hasil Tangkapan : Batu ${hasil}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - nambang[m.sender.split('@')[0]])}`)
+                    } else if(hasil == "💎") {
+                        const ditangkap = Math.ceil(Math.random() * 2)
+                        rpg.addPermata(sender, ditangkap, _rpg)
+                        m.reply(`Hasil Tangkapan : Permata ${hasil}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - nambang[m.sender.split('@')[0]])}`)
+                    } else if(hasil == "🪙") {
+                        const ditangkap = Math.ceil(Math.random() * 10)
+                        rpg.addEmas(sender, ditangkap, _rpg)
+                        m.reply(`Hasil Tangkapan : Emas ${hasil}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - nambang[m.sender.split('@')[0]])}`)
+                    } else if(hasil == "💍") {
+                        const ditangkap = Math.ceil(Math.random() * 5)
+                        rpg.addBerlian(sender, ditangkap, _rpg)
+                        m.reply(`Hasil Tangkapan : Berlian ${hasil}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - nambang[m.sender.split('@')[0]])}`)
+                    } else if(hasil == "ZONK") {
+                        m.reply('Anda Tewas Tertimpa Beton Dan Tidak Mendapatkan Tambangan')
+                    } else {
+                        m.reply("404")
+                    }
+                    delete nambang[sender.split('@')[0]]
+                }
             }
             break
 

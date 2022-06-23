@@ -6,6 +6,8 @@ global._afk = JSON.parse(fs.readFileSync('./database/afk.json'))
 global.user = require("./data/user")
 global.group = require("./data/group")
 global.level = require("./data/level")
+global.rpg = require("./data/rpg")
+global._rpg = JSON.parse(fs.readFileSync("./database/rpg.json"))
 global._user = JSON.parse(fs.readFileSync("./database/user.json"))
 global._group = JSON.parse(fs.readFileSync("./database/group.json"))
 
@@ -24,6 +26,8 @@ global.tebaklagu = {}
 global.tekateki = {}
 global.tebaklirik = {}
 global.tebaktebakan = {}
+global.mancing = {}
+global.nambang = {}
 
 global.mess = (type, m) => {
     let msg = {
@@ -38,7 +42,8 @@ global.mess = (type, m) => {
         dead: 'Fitur ini sedang dimatikan!',
         media: 'Reply media',
         error: "No Results Found",
-        isLimit: "Your limit has run out"
+        isLimit: "Your limit has run out",
+        isLimitGame: "Your limit Game has run out"
     }[type]
     if (msg) return m.reply(msg, m.from, { quoted: m })
 }
