@@ -57,7 +57,7 @@ const connect = async() => {
             else if (reason === DisconnectReason.restartRequired) { console.log("Restart Required, Restarting..."); connect(); }
             else if (reason === DisconnectReason.timedOut) { console.log("Connection TimedOut, Reconnecting..."); connect(); }
 			else {
-				console.log('Connection closed. You are logged out.')
+				console.log('Connection closed. You are logged out.'); process.exit(); 
 			}
 		}
 	})

@@ -27,7 +27,7 @@ module.exports = async (sock, m) => {
         const isBotGroupAdmins = groupAdmins.includes(sock.user?.jid)
         const isOwner = [sock.user?.jid, ...config.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(sender)
 
-        const isPremium = user.checkPremiumUser(m.sender, _user)
+        const isPremium = premium.checkPremiumUser(m.sender, _premium)
         const isAntidelete = group.cekAntidelete(m.from, _group)
         const isOffline = group.cekOffline(m.rom, _group)
         const isAntilink = group.cekAntilink(m.from, _group)
@@ -156,7 +156,7 @@ module.exports = async (sock, m) => {
             } else m.reply('*Jawaban Salah!*')
         } 
 
-        user.expiredCheck(sock, m, _user)
+        premium.expiredCheck(sock, m, _premium)
         if (isGroup) group.addGroup(m.from)
 
         if (isCmd && !m.key.fromMe) {
@@ -191,7 +191,7 @@ module.exports = async (sock, m) => {
 
         if (isGroup && !level.isGained(m.sender) && isLevelingOn && isCmd && !m.key.fromMe) {
             try {
-                level.addCooldown(sender)
+                level.addCooldown(m.sender)
                 const currentLevel = level.getLevelingLevel(sender, _user)
                 const amountXp = Math.floor(Math.random() * 5) + 5
                 const requiredXp = 20 * Math.pow(currentLevel, 2) + 50 * currentLevel + 100
@@ -202,6 +202,16 @@ module.exports = async (sock, m) => {
                     const fetchXp = 20 * Math.pow(userLevel, 2) + 50 * userLevel + 100
                     m.reply(`*LEVELUP*\n\n*XP :* ${level.getLevelingXp(sender, _user)} / ${fetchXp}\n*Level:* ${currentLevel} -> ${level.getLevelingLevel(sender, _user)}`)
                 }
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        if (isGroup && isLevelingOn && isCmd && !m.key.fromMe) {
+            try {
+                level.addCooldown(m.sender)
+                const uangsaku = Math.floor(Math.random() * 5) + 5
+                user.addBalance(m.sender, uangsaku, _user)
             } catch (err) {
                 console.error(err)
             }
@@ -1795,8 +1805,9 @@ module.exports = async (sock, m) => {
                 })
             }
             break
-            case 'premiumlist': {
-                let data = _user.filter((x)=>x.premium === true)
+            
+            case 'premlist': case 'premiumlist': {
+                let data = _premium
                 let caption = `List Prem\nAmount : ${data.length}\n\n`
                 for (let i of data) {
                     let checkExp = require("parse-ms")(i.expired - Date.now());
@@ -2125,33 +2136,17 @@ module.exports = async (sock, m) => {
                 }
             }
             break
-            case 'premium': case 'prem': {
-                if (!isOwner) return global.mess("owner", m)
-                if (!isGroup) return global.mess("group", m)
-                if (args.length < 2) return m.reply(`Example: ${prefix + command} add @tag/62812xxx 30d\nExample: ${prefix + command} del @tag/62812xxx`)
+            case 'prem': 
+            if (!isOwner) return global.mess("owner", m)
                 if (ar[0] === 'add') {
-                    if (m.mentions.length !== 0) {
-                        for (let i = 0; i < m.mentions.length; i++) {
-                            user.addPremiumUser(m.mentions[0], args[2], _user);
-                            m.reply(`*「 PREMIUM ADDED 」*\n\n*ID :* ${args[1]}\n*Expired :* ${ms(toMs(args[2])).days} day ${ms(toMs(args[2])).hours} hour ${ms(toMs(args[2])).minutes} minute`)
-                        }
-                    } else {
-                        user.addPremiumUser(args[1] + "@s.whatsapp.net", args[2], _user);
-                        m.reply(`*「 PREMIUM ADDED 」*\n\n*ID :* ${args[1]}\n*Expired :* ${ms(toMs(args[2])).days} day ${ms(toMs(args[2])).hours} hour ${ms(toMs(args[2])).minutes} minute`)
-                    }
-                } else if (ar[0] === 'del') {
-                    if (m.mentions.length !== 0) {
-                        for (let i = 0; i < m.mentions.length; i++) {
-                            user.delPremiumUser(m.mentions[0], _user)
-                            m.reply('Premium Deleted')
-                        }
-                    } else {
-                        user.delPremiumUser(args[1] + "@s.whatsapp.net", _user);
-                        m.reply('Premium Deleted')
-                    }
-                } else {
-                    m.reply('Pilih add / del')
-                }
+                    premium.addPremiumUser(args[1] + "@s.whatsapp.net", args[2], _premium)
+                    m.reply(`*「 PREMIUM ADDED 」*\n\n*ID :* ${args[1]}\n*Expired :* ${ms(toMs(args[2])).days} day(s) ${ms(toMs(args[2])).hours} hour(s) ${ms(toMs(args[2])).minutes} minute(s)`)
+            } else if (ar[0] === 'del') {
+                _premium.splice(premium.getPremiumPosition(args[1] + '@s.whatsapp.net', _premium), 1)
+                fs.writeFileSync('./database/premium.json', JSON.stringify(_premium))
+                m.reply(msg.doneOwner())
+            } else {
+                m.reply('Pilih add / del')
             }
             break
             case 'getcase': {
@@ -3171,6 +3166,7 @@ module.exports = async (sock, m) => {
 
             // BOT FEATURE
             case 'mancing': {
+                if (!isGroup) return global.mess("group", m)
                 if (mancing.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Pancingan Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -3199,6 +3195,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nambang': {
+                if (!isGroup) return global.mess("group", m)
                 if (nambang.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Tambangan Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -3232,6 +3229,23 @@ module.exports = async (sock, m) => {
                         m.reply("404")
                     }
                     delete nambang[sender.split('@')[0]]
+                }
+            }
+            break
+
+            case 'jualbatu': {
+                if (!isGroup) return global.mess("group", m)
+                if (!q) return m.reply(`Harga 1 stone 10 coin\nExample ${prefix + command} 1`)
+                if (q.includes('-')) return m.reply(`Harga 1 stone 10 coin\nExample ${prefix + command} 1`)
+                if (q.includes('.')) return m.reply(`Harga 1 stone 10 coin\nExample ${prefix + command} 1`)
+                const hargabatu = 10
+                const jumlah = q * 1
+                const result = q * hargabatu
+                if ( rpg.getBatu(m.sender, _rpg) <= jumlah ) return m.reply(`maaf ${senderName} kamu tidak punya ${q} stone`)
+                if ( rpg.getBatu(m.sender, _rpg) >= jumlah ) {
+                    rpg.jualBatu(m.sender, q, _rpg)
+                    user.addBalance(m.sender, result, _rpg)
+                    m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Batu dijual:* ${q}\n*Uang didapat:* ${result}\n\n*Sisa Batu:* ${rpg.getBatu(m.sender, _rpg)}\n*Sisa uang:* ${user.getBalance(m.sender, _user)}`)
                 }
             }
             break

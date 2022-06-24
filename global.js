@@ -2,14 +2,15 @@ const fs = require("fs")
 
 global.afk = require("./data/afk")
 global._afk = JSON.parse(fs.readFileSync('./database/afk.json'))
-
-global.user = require("./data/user")
-global.group = require("./data/group")
+global.premium = require("./data/premium")
+global._premium = JSON.parse(fs.readFileSync("./database/premium.json"))
 global.level = require("./data/level")
+global.user = require("./data/user")
+global._user = JSON.parse(fs.readFileSync("./database/user.json"))
+global.group = require("./data/group")
+global._group = JSON.parse(fs.readFileSync("./database/group.json"))
 global.rpg = require("./data/rpg")
 global._rpg = JSON.parse(fs.readFileSync("./database/rpg.json"))
-global._user = JSON.parse(fs.readFileSync("./database/user.json"))
-global._group = JSON.parse(fs.readFileSync("./database/group.json"))
 
 global.config = JSON.parse(fs.readFileSync('./config.json'))
 global.siapakah = {}

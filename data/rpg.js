@@ -49,13 +49,15 @@ const getIkan = (userId, _db) => {
     })
     if (position !== false) {
         return _db[position].fish
-    }
+    } else {
+		return 0
+	}
 }
 
-// const jualIkan = (sender, amount) => {
+// const jualIkan = (userId, amount) => {
 //     let position = false
 //     Object.keys(ikan).forEach((i) => {
-//         if (ikan[i].id === sender) {
+//         if (ikan[i].id === userId) {
 //             position = i
 //         }
 //     })
@@ -86,7 +88,22 @@ const getBatu = (userId, _db) => {
     })
     if (position !== false) {
         return _db[position].batu
+	} else {
+		return 0
 	}
+}
+
+const jualBatu = (userId, amount, _db) => {
+    let position = false
+    Object.keys(_db).forEach((i) => {
+        if (_db[i].id === userId) {
+            position = i
+        }
+    })
+    if (position !== false) {
+        _db[position].batu -= amount
+        fs.writeFileSync('./database/rpg.json', JSON.stringify(_db))
+    }
 }
 
 const addPermata = (userId, amount, _db) => {
@@ -111,6 +128,8 @@ const getPermata = (userId, _db) => {
     })
     if (position !== false) {
         return _db[position].permata
+	} else {
+		return 0
 	}
 }
 
@@ -135,6 +154,8 @@ const getEmas = (userId, _db) => {
     })
     if (position !== false) {
         return _db[position].emas
+	} else {
+		return 0
 	}
 }
 
@@ -159,6 +180,8 @@ const getBerlian = (userId, _db) => {
     })
     if (position !== false) {
         return _db[position].berlian
+	} else {
+		return 0
 	}
 }
 
@@ -169,6 +192,7 @@ module.exports = {
     getIkan,
     addBatu,
     getBatu,
+    jualBatu,
     addPermata,
     getPermata,
     addEmas,

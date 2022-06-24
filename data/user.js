@@ -5,7 +5,6 @@
 */
 
 const fs = require("fs")
-const toMs = require("ms")
 const cron = require('node-cron')
 const config = JSON.parse(fs.readFileSync('./config.json'))
 const time = require("moment-timezone").tz(config.timezone).format('DD/MM HH:mm:ss')
@@ -179,89 +178,6 @@ const getBalance = (userId, _db) => {
 	}
 }
 
-// PREMIUM USERDATA
-const addPremiumUser = (userId, expired, _db) => {
-	let found = false
-	Object.keys(_db).forEach((i) => {
-		if (_db[i].id === userId) {
-			found = i
-		}
-	})
-	if (found !== false) {
-		_db[found].premium = true
-        _db[found].expired = Date.now() + toMs(expired)
-		fs.writeFileSync("./database/user.json", JSON.stringify(_db, null, 4))
-	}
-}
-const delPremiumUser = (userId, _db) => {
-    let found = false
-    Object.keys(_db).forEach((i) => {
-        if (_db[i].id === userId) {
-            found = i
-        }
-    })
-    if (found !== false) {
-		_user[found].limit = 0
-		_user[found].premium = false
-		delete _user[found].expired
-		console.log(`Premium Deleted: ${_user[found].id}`)
-		fs.writeFileSync("./database/user.json", JSON.stringify(_user, null, 4))
-	}
-}
-const getPremiumPosition = (userId, _db) => {
-	let position = null
-	Object.keys(_db).forEach((i) => {
-		if (_db[i].id === userId) {
-			position = i;
-		}
-	})
-	if (position !== null) {
-		return position
-	}
-}
-const checkPremiumUser = (userId, _db) => {
-	let position = null
-	Object.keys(_db).forEach((i) => {
-		if (_db[i].id === userId) {
-			position = i
-		}
-	})
-	if (position !== null) {
-		return _db[position].premium
-	}
-}
-const getPremiumExpired = (userId, _db) => {
-	let position = null
-	Object.keys(_db).forEach((i) => {
-		if (_db[i].id === userId) {
-			position = i
-		}
-	})
-	if (position !== null) {
-		return _db[position].expired
-	}
-}
-const expiredCheck = (killua, m, _db) => {
-	setInterval(() => {
-		let found = false
-		Object.keys(_db).forEach((i) => {
-			if (Date.now() >= _db[i].expired) {
-				found = i
-			}
-		})
-		if (found !== false) {
-			idny = _db[found].id
-			_db[found].limit = 0
-            _db[found].premium = false
-            delete _db[found].expired
-			console.log(`Premium expired: ${_db[found].id}`)
-			fs.writeFileSync("./database/user.json", JSON.stringify(_db, null, 4))
-            idny ? killua.sendText(idny, "Your Premium Role has run out", m) : ""
-			idny = false
-		}
-	}, 10000)
-}
-
 cron.schedule('0 0 * * *', () => {
 	Object.keys(_user).forEach((i) => {
 		_user[i].limit = 0
@@ -284,10 +200,5 @@ module.exports = {
 	limitGameAdd,
 	getLimitGame,
 	addBalance,
-	getBalance,
-	addPremiumUser,
-	delPremiumUser,
-	checkPremiumUser,
-	getPremiumExpired,
-	expiredCheck,
+	getBalance
 }
