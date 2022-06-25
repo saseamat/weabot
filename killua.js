@@ -31,7 +31,7 @@ module.exports = async (sock, m) => {
         const isAfkOn = afk.checkAfkUser(m.sender, _afk) 
         const isLevelingOn = group.cekLeveling(m.from, _group)
         const isAntidelete = group.cekAntidelete(m.from, _group)
-        const isOffline = group.cekOffline(m.rom, _group)
+        const isOffline = group.cekOffline(m.from, _group)
         const isAntilink = group.cekAntilink(m.from, _group)
         const isNsfw = group.cekNsfw(m.from, _group)
 
