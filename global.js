@@ -44,7 +44,8 @@ global.mess = (type, m) => {
         media: 'Reply media',
         error: "No Results Found",
         isLimit: "Your limit has run out",
-        isLimitGame: "Your limit Game has run out"
+        isLimitGame: "Your limit Game has run out",
+        isNsfw: "NSFW belum diaktifkan untuk group ini!",
     }[type]
     if (msg) return m.reply(msg, m.from, { quoted: m })
 }

@@ -102,7 +102,7 @@ const jualBatu = (userId, amount, _db) => {
     })
     if (position !== false) {
         _db[position].batu -= amount
-        fs.writeFileSync('./database/rpg.json', JSON.stringify(_db))
+        fs.writeFileSync('./database/rpg.json', JSON.stringify(_db, null, 4))
     }
 }
 

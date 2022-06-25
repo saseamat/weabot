@@ -28,11 +28,12 @@ module.exports = async (sock, m) => {
         const isOwner = [sock.user?.jid, ...config.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(sender)
 
         const isPremium = premium.checkPremiumUser(m.sender, _premium)
+        const isAfkOn = afk.checkAfkUser(m.sender, _afk) 
+        const isLevelingOn = group.cekLeveling(m.from, _group)
         const isAntidelete = group.cekAntidelete(m.from, _group)
         const isOffline = group.cekOffline(m.rom, _group)
         const isAntilink = group.cekAntilink(m.from, _group)
-        const isAfkOn = afk.checkAfkUser(m.sender, _afk) 
-        const isLevelingOn = group.cekLeveling(m.rom, _group)
+        const isNsfw = group.cekNsfw(m.from, _group)
 
         const isCmd = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\\\©^]/.test(body) && sock.sendPresenceUpdate('composing', from)
         const prefix = isCmd ? body[0] : ''
@@ -237,7 +238,8 @@ module.exports = async (sock, m) => {
         }
         
         if (config.options.self && !isOwner && !m.fromMe) return
-        
+        if (command && !isGroup) return global.mess("group", m)
+
         switch (command) {
 
             // ANIMEWEB COMMNAND
@@ -255,6 +257,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'doujindesu': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (isUrl(text)) {
                     let fetch = await fetchUrl(`https://zenzapis.herokuapp.com/doujin?url=${isUrl(text)[0]}&key=andaracantik`)
@@ -422,6 +425,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nekopoi': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (text.toLowerCase() === "random") {
                     let fetch = await fetchUrl(global.api("zenz", "/animeweb/nekopoi/random", {}, "apikey"))
@@ -466,6 +470,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nhentai': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!q) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/nhentai", { query: text }, "apikey"))
@@ -1001,6 +1006,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'gore': case 'gorevideo': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/gore", {}, "apikey"))
                 let teks = `⭔ Title : ${fetch.result.title}\n⭔ Tag : ${fetch.result.tag}\n⭔ Upload : ${fetch.result.upload}\n⭔ Author : ${fetch.result.author}`
@@ -1008,6 +1014,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'hentaivideo': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/hentaivid", {}, "apikey"))
                 let teks = `⭔ Title : ${fetch.result.title}\n⭔ Category : ${fetch.result.category}\n⭔ Share : ${fetch.result.share_count}\n⭔ Views : ${fetch.result.views_count}`
@@ -1092,6 +1099,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tiktokporn': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/tikporn", {}, "apikey"))
                 let teks = `⭔ Title : ${fetch.result.title}\n⭔ Desc : ${fetch.result.desc}\n⭔ Upload : ${fetch.result.upload}\n⭔ Like : ${fetch.result.like}\n⭔ Dislike : ${fetch.result.dislike}\n⭔ Views : ${fetch.result.views}`
@@ -1176,6 +1184,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'xnxx': case 'xvideos': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/" + command, { url: isUrl(text)[0] }, "apikey"))
@@ -1548,6 +1557,32 @@ module.exports = async (sock, m) => {
                 }
             }
             break
+            case 'nsfw': {
+                if (!isGroup) return global.mess("group", m)
+                if (!isGroupAdmins) return global.mess("admin", m)
+                if (text === 'enable') {
+                    if (isNsfw === true) return m.reply('Nsfw already active')
+                    group.addNsfw(m.from, _group)
+                    m.reply(`Success activated Nsfw`)
+                } else if (text === 'disable') {
+                    if (isLevelingOn === false) return m.reply('Nsfw already deactive')
+                    group.delNsfw(m.from, _group)
+                    m.reply(`Success deactivated Nsfw`)
+                } else {
+                    let buttons = [
+                        { buttonId: `${prefix}nsfw enable`, buttonText: { displayText: 'ENABLE'}, type: 1 },
+                        { buttonId: `${prefix}nsfw disable`, buttonText: { displayText: 'DISABLE'}, type: 1 }
+                    ]
+                    let buttonMessage = {
+                        text: `*⭔ Nsfw Status:* ${group.cekLeveling(m.from, _group) ? 'Activated' : 'Deactivated'}\n\n_Pilih enable atau disable!_`,
+                        footer: config.footer,
+                        buttons: buttons,
+                        headerType: 4
+                    }
+                    sock.sendMessage(m.from, buttonMessage, { quoted: m })
+                }
+            }
+            break
 
             // INFORMATION COMMNAND
             case 'covid': {
@@ -1793,7 +1828,6 @@ module.exports = async (sock, m) => {
                     templateButtons: templateButtons
                 }
                 sock.sendMessage(m.from, templateMessage, { quoted: m })
-                //sock.sendText(m.from, help, m)
             }
             break
             case 'ping': case 'p': {
@@ -1819,6 +1853,7 @@ module.exports = async (sock, m) => {
 
             // MORENSFW COMMNAND
             case 'mnsfwimage': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!q) return m.reply(`List Type :\n\n${mnsfw_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await global.api("zenz", "/api/morensfw/" + text, {}, "apikey")
@@ -2119,6 +2154,21 @@ module.exports = async (sock, m) => {
             break
 
             // OWNER COMMNAND
+            case 'ownerbot': case 'owner': {
+                const vcard = 'BEGIN:VCARD\n'
+                + 'VERSION:3.0\n' 
+                + 'FN:zahwazein\n'
+                + 'ORG:zenzapis.xyz\n'
+                + `TEL;type=CELL;type=VOICE;waid=${config.owner[0]}:${config.owner[0]}\n`
+                + 'END:VCARD'
+                sock.sendMessage(m.from, {
+                    contacts: { 
+                        displayName: 'Jeff', 
+                        contacts: [{ vcard }] 
+                    }
+                })
+            }
+            break
             case 'autoread': {
                 if (!isOwner) return global.mess("owner", m)
                 if (text === 'enable') {
@@ -2526,6 +2576,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'cersex': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomtext/cersex2", {}, "apikey"))
                 let caption = `Generate Random Cersex :\n\n`
@@ -2714,6 +2765,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'pixiv': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!q) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/pixiv", { query: text }, "apikey"))
@@ -2822,6 +2874,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'xnxxsearch': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!q) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/xnxx", { query: text }, "apikey"))
@@ -2836,6 +2889,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'xvideosearch': {
+                if (!isNsfw) return global.mess("isNsfw", m)
                 if (!q) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/xvideos", { query: text }, "apikey"))
@@ -2905,11 +2959,11 @@ module.exports = async (sock, m) => {
             case 'stalkig': case 'igstalk': {
                 if (!q) return m.reply(`Example: ${prefix + command} username`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
-                let fetch = await fetchUrl(global.api("zenz", "/stalker/stalker/ig", { username: text }, "apikey"))
+                let fetch = await fetchUrl(global.api("zenz", "/stalker/ig", { username: text }, "apikey"))
                 let caption = `Instagram Profile Stalker :\n\n`
                 let i = fetch.result.caption
                 caption += `⭔ Fullname : ${i.full_name}\n`
-                caption += `⭔ User_name : ${i.user_name}\n`
+                caption += `⭔ Username : ${i.user_name}\n`
                 caption += `⭔ Userid : ${i.user_id}\n`
                 caption += `⭔ Followers : ${i.followers}\n`
                 caption += `⭔ Following : ${i.following}\n`
@@ -3232,7 +3286,6 @@ module.exports = async (sock, m) => {
                 }
             }
             break
-
             case 'jualbatu': {
                 if (!isGroup) return global.mess("group", m)
                 if (!q) return m.reply(`Harga 1 stone 10 coin\nExample ${prefix + command} 1`)
@@ -3244,7 +3297,7 @@ module.exports = async (sock, m) => {
                 if ( rpg.getBatu(m.sender, _rpg) <= jumlah ) return m.reply(`maaf ${senderName} kamu tidak punya ${q} stone`)
                 if ( rpg.getBatu(m.sender, _rpg) >= jumlah ) {
                     rpg.jualBatu(m.sender, q, _rpg)
-                    user.addBalance(m.sender, result, _rpg)
+                    user.addBalance(m.sender, result, _user)
                     m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Batu dijual:* ${q}\n*Uang didapat:* ${result}\n\n*Sisa Batu:* ${rpg.getBatu(m.sender, _rpg)}\n*Sisa uang:* ${user.getBalance(m.sender, _user)}`)
                 }
             }
@@ -3258,9 +3311,6 @@ module.exports = async (sock, m) => {
         }
     } catch (e) {
         m.reply(String(e))
-        var child = spawn('rs');
-        child.on('error', (err) => {
-            console.log(color('|ERR|', 'red'), color(err, 'cyan'))
-        })
+        console.log(color('|ERR|', 'red'), color(String(e), 'cyan'))
     }
 }

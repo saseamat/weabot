@@ -233,6 +233,43 @@ const cekLeveling = (userId, _db) => {
     }
 }
 
+// LEVELING
+const addNsfw = (userId, _db) => {
+	let found = false
+	Object.keys(_db).forEach((i) => {
+		if (_db[i].from === userId) {
+			found = i
+		}
+	})
+	if (found !== false) {
+		_db[found].nsfw = true
+		fs.writeFileSync("./database/group.json", JSON.stringify(_db, null, 4))
+	}
+}
+const delNsfw = (userId, _db) => {
+    let found = false
+    Object.keys(_db).forEach((i) => {
+        if (_db[i].from === userId) {
+            found = i
+        }
+    })
+    if (found !== false) {
+        _db[found].nsfw = false
+        fs.writeFileSync("./database/group.json", JSON.stringify(_db, null, 4))
+    }
+}
+const cekNsfw = (userId, _db) => {
+    let found = false
+    Object.keys(_db).forEach((i) => {
+        if (_db[i].from === userId) {
+            found = i
+    }
+    })
+    if (found !== false) {
+        return _db[found].nsfw
+    }
+}
+
 module.exports = {
     addGroup,
     addAntidelete,
@@ -250,5 +287,8 @@ module.exports = {
     welcomeSet,
     addLeveling,
     delLeveling,
-    cekLeveling
+    cekLeveling,
+    addNsfw,
+    delNsfw,
+    cekNsfw
 }
