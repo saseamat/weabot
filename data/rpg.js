@@ -53,19 +53,18 @@ const getIkan = (userId, _db) => {
 		return 0
 	}
 }
-
-// const jualIkan = (userId, amount) => {
-//     let position = false
-//     Object.keys(ikan).forEach((i) => {
-//         if (ikan[i].id === userId) {
-//             position = i
-//         }
-//     })
-//     if (position !== false) {
-//         ikan[position].fish -= amount
-//         fs.writeFileSync('./database/user/uang.json', JSON.stringify(uang))
-//     }
-// }
+const jualIkan = (userId, amount, _db) => {
+    let position = false
+    Object.keys(_db).forEach((i) => {
+        if (_db[i].id === userId) {
+            position = i
+        }
+    })
+    if (position !== false) {
+        _db[position].fish -= amount
+        fs.writeFileSync('./database/rpg.json', JSON.stringify(_db, null, 4))
+    }
+}
 
 const addBatu = (userId, amount, _db) => {
     let position = false
@@ -92,7 +91,6 @@ const getBatu = (userId, _db) => {
 		return 0
 	}
 }
-
 const jualBatu = (userId, amount, _db) => {
     let position = false
     Object.keys(_db).forEach((i) => {
@@ -132,6 +130,18 @@ const getPermata = (userId, _db) => {
 		return 0
 	}
 }
+const jualPermata = (userId, amount, _db) => {
+    let position = false
+    Object.keys(_db).forEach((i) => {
+        if (_db[i].id === userId) {
+            position = i
+        }
+    })
+    if (position !== false) {
+        _db[position].permata -= amount
+        fs.writeFileSync('./database/rpg.json', JSON.stringify(_db, null, 4))
+    }
+}
 
 const addEmas = (userId, amount, _db) => {
     let position = false
@@ -158,31 +168,17 @@ const getEmas = (userId, _db) => {
 		return 0
 	}
 }
-
-const addBerlian = (userId, amount, _db) => {
+const jualEmas = (userId, amount, _db) => {
     let position = false
-    Object.keys(_db).forEach((i) => {
-        if (_db[i].id === userId) {
-        position = i
-        }
-    })
-    if (position !== false) {
-        _db[position].berlian += amount
-        fs.writeFileSync('./database/rpg.json', JSON.stringify(_db, null, 4))
-    }
-}
-const getBerlian = (userId, _db) => {
-    let position = false 
     Object.keys(_db).forEach((i) => {
         if (_db[i].id === userId) {
             position = i
         }
     })
     if (position !== false) {
-        return _db[position].berlian
-	} else {
-		return 0
-	}
+        _db[position].emas -= amount
+        fs.writeFileSync('./database/rpg.json', JSON.stringify(_db, null, 4))
+    }
 }
 
 //END OF MANCING FUNCTION
@@ -190,13 +186,14 @@ module.exports = {
     addRpg,
     addIkan,
     getIkan,
+    jualIkan,
     addBatu,
     getBatu,
     jualBatu,
     addPermata,
     getPermata,
+    jualPermata,
     addEmas,
     getEmas,
-    addBerlian,
-    getBerlian,
+    jualEmas
 }

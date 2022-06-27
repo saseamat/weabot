@@ -1259,7 +1259,7 @@ module.exports = async (sock, m) => {
             // ENTERTAINMENT COMMNAND
             case 'asahotak': {
                 if (asahotak.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/asahotak", {}, "apikey"))
                 let result = await fetch.result
@@ -1276,7 +1276,7 @@ module.exports = async (sock, m) => {
             break
             case 'caklontong': {
                 if (caklontong.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/caklontong", {}, "apikey"))
                 let result = await fetch.result
@@ -1293,7 +1293,7 @@ module.exports = async (sock, m) => {
             break
             case 'family100': {
                 if (family100.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/family100", {}, "apikey"))
                 let result = await fetch.result
@@ -1322,7 +1322,7 @@ module.exports = async (sock, m) => {
             break
             case 'siapakah': {
                 if (siapakah.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/siapakah", {}, "apikey"))
                 let result = await fetch.result
@@ -1352,7 +1352,7 @@ module.exports = async (sock, m) => {
             break
             case 'susunkata': {
                 if (susunkata.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/susunkata", {}, "apikey"))
                 let result = await fetch.result
@@ -1369,7 +1369,7 @@ module.exports = async (sock, m) => {
             break
             case 'tebakbendera': {
                 if (tebakbendera.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakbendera", {}, "apikey"))
                 let result = await fetch.result
@@ -1386,7 +1386,7 @@ module.exports = async (sock, m) => {
             break
             case 'tebakgambar': {
                 if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakgambar", {}, "apikey"))
                 let result = await fetch.result
@@ -1403,7 +1403,7 @@ module.exports = async (sock, m) => {
             break
             case 'tebakkabupaten': {
                 if (tebakkabupaten.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkabupaten", {}, "apikey"))
                 let result = await fetch.result
@@ -1421,7 +1421,7 @@ module.exports = async (sock, m) => {
             break
             case 'tebakkalimat': {
                 if (tebakkalimat.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkalimat", {}, "apikey"))
                 let result = await fetch.result
@@ -1438,7 +1438,7 @@ module.exports = async (sock, m) => {
             break
             case 'tebakkata': {
                 if (tebakkata.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkata", {}, "apikey"))
                 let result = await fetch.result
@@ -1455,7 +1455,7 @@ module.exports = async (sock, m) => {
             break
             case 'tebaklagu': {
                 if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl("https://hisoka-morou.netlify.app/assets/database/tebaklagu.json")
                 let result = await fetch[Math.floor(Math.random() * fetch.length)]
@@ -1472,7 +1472,7 @@ module.exports = async (sock, m) => {
             break
             case 'tebaklirik': {
                 if (tebaklirik.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebaklirik", {}, "apikey"))
                 let result = await fetch.result
@@ -1489,7 +1489,7 @@ module.exports = async (sock, m) => {
             break
             case 'tebaktebakan': {
                 if (tebaktebakan.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebaktebakan", {}, "apikey"))
                 let result = await fetch.result
@@ -1507,7 +1507,7 @@ module.exports = async (sock, m) => {
             break
             case 'tekateki': {
                 if (tekateki.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tekateki", {}, "apikey"))
                 let result = await fetch.result
@@ -2186,17 +2186,18 @@ module.exports = async (sock, m) => {
                 }
             }
             break
-            case 'prem': 
-            if (!isOwner) return global.mess("owner", m)
-                if (ar[0] === 'add') {
-                    premium.addPremiumUser(args[1] + "@s.whatsapp.net", args[2], _premium)
-                    m.reply(`*「 PREMIUM ADDED 」*\n\n*ID :* ${args[1]}\n*Expired :* ${ms(toMs(args[2])).days} day(s) ${ms(toMs(args[2])).hours} hour(s) ${ms(toMs(args[2])).minutes} minute(s)`)
-            } else if (ar[0] === 'del') {
-                _premium.splice(premium.getPremiumPosition(args[1] + '@s.whatsapp.net', _premium), 1)
-                fs.writeFileSync('./database/premium.json', JSON.stringify(_premium))
-                m.reply(msg.doneOwner())
-            } else {
-                m.reply('Pilih add / del')
+            case 'prem': {
+                if (!isOwner) return global.mess("owner", m)
+                    if (ar[0] === 'add') {
+                        premium.addPremiumUser(args[1] + "@s.whatsapp.net", args[2], _premium)
+                        m.reply(`*「 PREMIUM ADDED 」*\n\n*ID :* ${args[1]}\n*Expired :* ${ms(toMs(args[2])).days} day(s) ${ms(toMs(args[2])).hours} hour(s) ${ms(toMs(args[2])).minutes} minute(s)`)
+                } else if (ar[0] === 'del') {
+                    _premium.splice(premium.getPremiumPosition(args[1] + '@s.whatsapp.net', _premium), 1)
+                    fs.writeFileSync('./database/premium.json', JSON.stringify(_premium))
+                    m.reply(msg.doneOwner())
+                } else {
+                    m.reply('Pilih add / del')
+                }
             }
             break
             case 'getcase': {
@@ -3025,8 +3026,7 @@ module.exports = async (sock, m) => {
                 const batu = rpg.getBatu(m.sender, _rpg)
                 const permata = rpg.getPermata(m.sender, _rpg)
                 const emas = rpg.getEmas(m.sender, _rpg)
-                const berlian = rpg.getBerlian(m.sender, _rpg)
-                m.reply(zenz.inventory(senderName, balance, fish, batu, permata, emas, berlian))
+                m.reply(zenz.inventory(senderName, balance, fish, batu, permata, emas))
             }
 			break
             case 'afk': {
@@ -3041,8 +3041,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'limit': case 'ceklimit': {
-			    if (isPremium || isOwner) return m.reply(`Limit: Unlimited\nLimit Game: ${user.getLimitGame(m.sender, _user)} / ${config.options.limitGame} Max\n\nBalance : ${user.getBalance(m.sender, _user)}`)
-			    m.reply(`Limit left: ${user.getLimit(m.sender, _user)} / ${config.options.limitCount} Max\nLimit Game: ${user.getLimitGame(m.sender, _user)} / ${config.options.limitGame} Max\nBalance : ${user.getBalance(m.sender, _user)}\n\n_Limit direset tiap pukul 00:00_`)
+			    if (isPremium || isOwner) return m.reply(`Limit: Unlimited\nLimit Game: ${user.getLimitGame(m.sender, _user)} / ${config.options.limitgameCount} Max\n\nBalance : ${user.getBalance(m.sender, _user)}`)
+			    m.reply(`Limit left: ${user.getLimit(m.sender, _user)} / ${config.options.limitCount} Max\nLimit Game: ${user.getLimitGame(m.sender, _user)} / ${config.options.limitgameCount} Max\nBalance : ${user.getBalance(m.sender, _user)}\n\n_Limit direset tiap pukul 00:00_`)
             }
 			break
             case 'cekpremium': case 'cekprem': {
@@ -3233,7 +3233,7 @@ module.exports = async (sock, m) => {
             case 'mancing': {
                 if (!isGroup) return global.mess("group", m)
                 if (mancing.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Pancingan Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 m.reply('Sedang Memancing, silahkan tunggu..')
 
@@ -3262,7 +3262,7 @@ module.exports = async (sock, m) => {
             case 'nambang': {
                 if (!isGroup) return global.mess("group", m)
                 if (nambang.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Tambangan Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
+                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
                 m.reply('Sedang Menambang, silahkan tunggu..')
 
@@ -3270,10 +3270,10 @@ module.exports = async (sock, m) => {
                 await sleep(Math.floor(10000 + Math.random() * 50000))
 
                 if (nambang.hasOwnProperty(m.sender.split('@')[0])) {
-                    const result =["🗿","💎","🪙","💍","ZONK"]
+                    const result =["🗿","💎","🪙","ZONK"]
                     const hasil = result[Math.floor(Math.random() * result.length)]
                     if (hasil == "🗿" ) {
-                        const ditangkap = Math.ceil(Math.random() * 50)
+                        const ditangkap = Math.ceil(Math.random() * 10)
                         rpg.addBatu(sender, ditangkap, _rpg)
                         m.reply(`Hasil Tangkapan : Batu ${hasil}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - nambang[m.sender.split('@')[0]])}`)
                     } else if(hasil == "💎") {
@@ -3281,13 +3281,9 @@ module.exports = async (sock, m) => {
                         rpg.addPermata(sender, ditangkap, _rpg)
                         m.reply(`Hasil Tangkapan : Permata ${hasil}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - nambang[m.sender.split('@')[0]])}`)
                     } else if(hasil == "🪙") {
-                        const ditangkap = Math.ceil(Math.random() * 10)
+                        const ditangkap = Math.ceil(Math.random() * 5)
                         rpg.addEmas(sender, ditangkap, _rpg)
                         m.reply(`Hasil Tangkapan : Emas ${hasil}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - nambang[m.sender.split('@')[0]])}`)
-                    } else if(hasil == "💍") {
-                        const ditangkap = Math.ceil(Math.random() * 5)
-                        rpg.addBerlian(sender, ditangkap, _rpg)
-                        m.reply(`Hasil Tangkapan : Berlian ${hasil}\nJumlah Tangkapan : ${ditangkap}\nSelama ${clockString(new Date - nambang[m.sender.split('@')[0]])}`)
                     } else if(hasil == "ZONK") {
                         m.reply('Anda Tewas Tertimpa Beton Dan Tidak Mendapatkan Tambangan')
                     } else {
@@ -3297,19 +3293,82 @@ module.exports = async (sock, m) => {
                 }
             }
             break
-            case 'jualbatu': {
-                if (!isGroup) return global.mess("group", m)
-                if (!q) return m.reply(`Harga 1 stone 10 coin\nExample ${prefix + command} 1`)
-                if (q.includes('-')) return m.reply(`Harga 1 stone 10 coin\nExample ${prefix + command} 1`)
-                if (q.includes('.')) return m.reply(`Harga 1 stone 10 coin\nExample ${prefix + command} 1`)
-                const hargabatu = 10
-                const jumlah = q * 1
-                const result = q * hargabatu
-                if ( rpg.getBatu(m.sender, _rpg) <= jumlah ) return m.reply(`maaf ${senderName} kamu tidak punya ${q} stone`)
-                if ( rpg.getBatu(m.sender, _rpg) >= jumlah ) {
-                    rpg.jualBatu(m.sender, q, _rpg)
-                    user.addBalance(m.sender, result, _user)
-                    m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Batu dijual:* ${q}\n*Uang didapat:* ${result}\n\n*Sisa Batu:* ${rpg.getBatu(m.sender, _rpg)}\n*Sisa uang:* ${user.getBalance(m.sender, _user)}`)
+            case 'jual': case 'sell': {
+                if (ar[0] === 'ikan') {
+                    if (!args[1]) return m.reply(`Harga 1 Ikan 50 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
+                    if (args[1].includes('-')) return m.reply(`Example ${prefix + command} ikan 1`)
+                    if (args[1].includes('.')) return m.reply(`Example ${prefix + command} ikan 1`)
+                    const result = args[1] * 50
+                    if ( rpg.getIkan(m.sender, _rpg) <= args[1] ) return m.reply(`Maaf ${senderName} Kamu Tidak Punya ${ar[1]} Ikan`)
+                    if ( rpg.getIkan(m.sender, _rpg) >= args[1] ) {
+                        rpg.jualIkan(m.sender, args[1], _rpg)
+                        user.addBalance(m.sender, result, _user)
+                        m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Ikan Dijual:* ${args[1]}\n*Uang didapat:* ${result}\n\n*Sisa Ikan:* ${rpg.getIkan(m.sender, _rpg)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
+                    }
+                } else if (ar[0] === 'batu') {
+                    if (!args[1]) return m.reply(`Harga 1 Batu 10 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
+                    if (args[1].includes('-')) return m.reply(`Example ${prefix + command} batu 1`)
+                    if (args[1].includes('.')) return m.reply(`Example ${prefix + command} batu 1`)
+                    const result = args[1] * 10
+                    if ( rpg.getBatu(m.sender, _rpg) <= args[1] ) return m.reply(`Maaf ${senderName} Kamu Tidak Punya ${ar[1]} Batu`)
+                    if ( rpg.getBatu(m.sender, _rpg) >= args[1] ) {
+                        rpg.jualBatu(m.sender, args[1], _rpg)
+                        user.addBalance(m.sender, result, _user)
+                        m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Batu Dijual:* ${args[1]}\n*Uang didapat:* ${result}\n\n*Sisa Batu:* ${rpg.getBatu(m.sender, _rpg)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
+                    }
+                } else if (ar[0] === 'emas') {
+                    if (!args[1]) return m.reply(`Harga 1 Emas 100 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
+                    if (args[1].includes('-')) return m.reply(`Example ${prefix + command} emas 1`)
+                    if (args[1].includes('.')) return m.reply(`Example ${prefix + command} emas 1`)
+                    const result = args[1] * 100
+                    if ( rpg.getEmas(m.sender, _rpg) <= args[1] ) return m.reply(`Maaf ${senderName} Kamu Tidak Punya ${ar[1]} Emas`)
+                    if ( rpg.getEmas(m.sender, _rpg) >= args[1] ) {
+                        rpg.jualEmas(m.sender, args[1], _rpg)
+                        user.addBalance(m.sender, result, _user)
+                        m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Emas Dijual:* ${args[1]}\n*Uang didapat:* ${result}\n\n*Sisa Emas:* ${rpg.getEmas(m.sender, _rpg)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
+                    }
+                } else if (ar[0] === 'permata') {
+                    if (!args[1]) return m.reply(`Harga 1 Permata 200 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
+                    if (args[1].includes('-')) return m.reply(`Example ${prefix + command} permata 1`)
+                    if (args[1].includes('.')) return m.reply(`Example ${prefix + command} permata 1`)
+                    const result = args[1] * 200
+                    if ( rpg.getPermata(m.sender, _rpg) <= args[1] ) return m.reply(`Maaf ${senderName} Kamu Tidak Punya ${ar[1]} Permata`)
+                    if ( rpg.getPermata(m.sender, _rpg) >= args[1] ) {
+                        rpg.jualPermata(m.sender, args[1], _rpg)
+                        user.addBalance(m.sender, result, _user)
+                        m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Permata Dijual:* ${args[1]}\n*Uang didapat:* ${result}\n\n*Sisa Permata:* ${rpg.getPermata(m.sender, _rpg)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
+                    }
+                } else {
+                    m.reply(`Mau Jual Apaan ?\n- ikan\n- batu\n- emas\n- permata\n\nExample: ${prefix + command} ikan 10`)
+                }
+            }
+            break
+            case 'beli': case 'buy': {
+                if (ar[0] === 'limit') {
+                    if (!args[1]) return m.reply(`Harga 1 Limit 500 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
+                    if (args[1].includes('-')) return m.reply(`Example ${prefix + command} limit 10`)
+                    if (args[1].includes('.')) return m.reply(`Example ${prefix + command} limit 10`)
+                    const result = args[1] * 500
+                    if ( user.getBalance(m.sender, _user) <= result ) return m.reply(`Maaf ${senderName} Kamu Tidak Punya ${result} Balance`)
+                    if ( user.getBalance(m.sender, _user) >= result ) {
+                        user.jualBalance(m.sender, result, _user)
+                        user.jualLimit(m.sender, args[1], _user)
+                        m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Limit Dibeli:* ${args[1]}\n\n*Sisa Limit:* ${user.getLimit(m.sender, _user)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
+                    }
+                    if (ar[0] === 'limitgame') {
+                        if (!args[1]) return m.reply(`Harga 1 Limitgame 250 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
+                        if (args[1].includes('-')) return m.reply(`Example ${prefix + command} limitgame 10`)
+                        if (args[1].includes('.')) return m.reply(`Example ${prefix + command} limitgame 10`)
+                        const result = args[1] * 250
+                        if ( user.getBalance(m.sender, _user) <= result ) return m.reply(`Maaf ${senderName} Kamu Tidak Punya ${result} Balance`)
+                        if ( user.getBalance(m.sender, _user) >= result ) {
+                            user.jualBalance(m.sender, result, _user)
+                            user.jualLimitGame(m.sender, args[1], _user)
+                            m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Limitgame Dibeli:* ${args[1]}\n\n*Sisa Limitgame:* ${user.getLimitGame(m.sender, _user)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
+                        }
+                    }
+                } else {
+                    m.reply(`Mau Beli Apaan ?\n- limit\n- limitgame\n\nExample: ${prefix + command} limit 10`)
                 }
             }
             break

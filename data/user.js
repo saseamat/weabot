@@ -59,7 +59,7 @@ const isLimit = (userId, isPremium, isOwner, limitCount, _db) => {
 			  return false
 		   }
 		}
-	 }
+	}
 	if (found === false) {
 		const obj = { id: userId, limit: 0 }
 		_db.push(obj)
@@ -98,13 +98,25 @@ const getLimit = (userId, _db) => {
 	   return _db[pos].limit
 	}
 }
+const jualLimit = (userId, amount, _db) => {
+    let position = false
+    Object.keys(_db).forEach((i) => {
+        if (_db[i].id === userId) {
+            position = i
+        }
+    })
+    if (position !== false) {
+        _db[position].limit -= amount
+        fs.writeFileSync('./database/user.json', JSON.stringify(_db, null, 4))
+    }
+}
 
 // LIMITGAME USERDATA
-const isLimitGame = (userId, limitGame, _db) => {
+const isLimitGame = (userId, limitgameCount, _db) => {
 	let found = false
 	for (let i of _db) {
 		if (i.id === userId) {
-		   if (i.limitgame >= limitGame) {
+		   if (i.limitgame >= limitgameCount) {
 			  found = true
 			  return true
 		   } else {
@@ -112,7 +124,7 @@ const isLimitGame = (userId, limitGame, _db) => {
 			  return false
 		   }
 		}
-	 }
+	}
 	if (found === false) {
 		const obj = { id: userId, limitgame: 0 }
 		_db.push(obj)
@@ -150,6 +162,18 @@ const getLimitGame = (userId, _db) => {
 	   return _db[pos].limitgame
 	}
 }
+const jualLimitGame = (userId, amount, _db) => {
+    let position = false
+    Object.keys(_db).forEach((i) => {
+        if (_db[i].id === userId) {
+            position = i
+        }
+    })
+    if (position !== false) {
+        _db[position].limitgame -= amount
+        fs.writeFileSync('./database/user.json', JSON.stringify(_db, null, 4))
+    }
+}
 
 // BALANCE USERDATA
 const addBalance = (userId, amount, _db) => {
@@ -177,6 +201,18 @@ const getBalance = (userId, _db) => {
 		return 0
 	}
 }
+const jualBalance = (userId, amount, _db) => {
+    let position = false
+    Object.keys(_db).forEach((i) => {
+        if (_db[i].id === userId) {
+            position = i
+        }
+    })
+    if (position !== false) {
+        _db[position].balance -= amount
+        fs.writeFileSync('./database/user.json', JSON.stringify(_db, null, 4))
+    }
+}
 
 cron.schedule('0 0 * * *', () => {
 	Object.keys(_user).forEach((i) => {
@@ -196,9 +232,12 @@ module.exports = {
 	isLimit,
 	limitAdd,
 	getLimit,
+	jualLimit,
 	isLimitGame,
 	limitGameAdd,
 	getLimitGame,
+	jualLimitGame,
 	addBalance,
-	getBalance
+	getBalance,
+	jualBalance
 }
