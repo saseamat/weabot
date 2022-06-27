@@ -1013,7 +1013,7 @@ module.exports = async (sock, m) => {
                 sock.sendFile(m.from, fetch.result.video1, "", m, { caption: teks })
             }
             break
-            case 'hentaivideo': {
+            case 'hentaivideo': case 'hentaivid': {
                 if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/hentaivid", {}, "apikey"))
@@ -1021,7 +1021,7 @@ module.exports = async (sock, m) => {
                 sock.sendFile(m.from, fetch.result.video_1, "", m, { caption: teks })
             }
             break
-            case 'instagram': case 'igdl': case 'igtv': case 'igreel': {
+            case 'instagram': case 'ig': case 'igdl': case 'igtv': case 'igreel': {
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram", { url:isUrl(text)[0] }, "apikey"))
@@ -1220,7 +1220,7 @@ module.exports = async (sock, m) => {
                 sock.sendMessage(m.from, buttonMessage, { quoted: m })
             }
             break
-            case 'ytplay': {
+            case 'ytplay': case 'play': {
                 if (!isPremium) return global.mess("premium", m)
                 if (!q) return m.reply(`Example: ${prefix + command} query`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/ytplay", { query: text }, "apikey"))
@@ -2267,13 +2267,25 @@ module.exports = async (sock, m) => {
             break
             
             // PRIMBON COMMNAND
-            case 'artimimpi': case 'artinama': {
+            case 'artimimpi': {
                 if (!q) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/primbon/" + command, { query: text }, "apikey"))
                 let caption = `Primbon ${command} :\n\n`
                 let i = fetch.result
                 caption += `⭔ Mimpi : ${i.mimpi}\n`
+                caption += `⭔ Arti : ${i.arti}\n`
+                sock.sendText(m.from, caption, m)
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
+            case 'artinama': {
+                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                let fetch = await fetchUrl(global.api("zenz", "/primbon/" + command, { text: text }, "apikey"))
+                let caption = `Primbon ${command} :\n\n`
+                let i = fetch.result
+                caption += `⭔ Nama : ${i.nama}\n`
                 caption += `⭔ Arti : ${i.arti}\n`
                 sock.sendText(m.from, caption, m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
@@ -2341,7 +2353,6 @@ module.exports = async (sock, m) => {
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
-
             case 'nomerhoki': {
                 if (!q) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
