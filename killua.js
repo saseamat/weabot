@@ -3047,7 +3047,7 @@ module.exports = async (sock, m) => {
 			break
             case 'cekpremium': case 'cekprem': {
                 if (!isPremium) return global.mess("premium", m)
-                let cekprem = require("parse-ms")((await user.getPremiumExpired(m.sender, _user)) - Date.now())
+                let cekprem = require("parse-ms")((await premium.getPremiumExpired(m.sender, _premium)) - Date.now())
                 let caption = `*Expired :* ${cekprem.days} day ${cekprem.hours} hour ${cekprem.minutes} minute ${cekprem.seconds} Second`
                 sock.sendText(m.from, caption, m)
             }
@@ -3059,7 +3059,7 @@ module.exports = async (sock, m) => {
                 } catch {
                     statuses = "Nothing.."
                 }
-                let cekprem = require("parse-ms")((await user.getPremiumExpired(m.sender, _user)) - Date.now())
+                let cekprem = require("parse-ms")((await premium.getPremiumExpired(m.sender, _premium)) - Date.now())
                 const premi = isPremium ? `-${cekprem.days} Days` : 'No'
                 const levelMe = level.getLevelingLevel(m.sender, _user)
                 const xpMe = level.getLevelingXp(sender, _user)
@@ -3355,17 +3355,16 @@ module.exports = async (sock, m) => {
                         user.jualLimit(m.sender, args[1], _user)
                         m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Limit Dibeli:* ${args[1]}\n\n*Sisa Limit:* ${user.getLimit(m.sender, _user)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
                     }
-                    if (ar[0] === 'limitgame') {
-                        if (!args[1]) return m.reply(`Harga 1 Limitgame 250 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
-                        if (args[1].includes('-')) return m.reply(`Example ${prefix + command} limitgame 10`)
-                        if (args[1].includes('.')) return m.reply(`Example ${prefix + command} limitgame 10`)
-                        const result = args[1] * 250
-                        if ( user.getBalance(m.sender, _user) <= result ) return m.reply(`Maaf ${senderName} Kamu Tidak Punya ${result} Balance`)
-                        if ( user.getBalance(m.sender, _user) >= result ) {
-                            user.jualBalance(m.sender, result, _user)
-                            user.jualLimitGame(m.sender, args[1], _user)
-                            m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Limitgame Dibeli:* ${args[1]}\n\n*Sisa Limitgame:* ${user.getLimitGame(m.sender, _user)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
-                        }
+                } else if (ar[0] === 'limitgame') {
+                    if (!args[1]) return m.reply(`Harga 1 Limitgame 250 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
+                    if (args[1].includes('-')) return m.reply(`Example ${prefix + command} limitgame 10`)
+                    if (args[1].includes('.')) return m.reply(`Example ${prefix + command} limitgame 10`)
+                    const result = args[1] * 250
+                    if ( user.getBalance(m.sender, _user) <= result ) return m.reply(`Maaf ${senderName} Kamu Tidak Punya ${result} Balance`)
+                    if ( user.getBalance(m.sender, _user) >= result ) {
+                        user.jualBalance(m.sender, result, _user)
+                        user.jualLimitGame(m.sender, args[1], _user)
+                        m.reply(`*PENJUALAN BERHASIL*\n\n*Jumlah Limitgame Dibeli:* ${args[1]}\n\n*Sisa Limitgame:* ${user.getLimitGame(m.sender, _user)}\n*Sisa Uang:* ${user.getBalance(m.sender, _user)}`)
                     }
                 } else {
                     m.reply(`Mau Beli Apaan ?\n- limit\n- limitgame\n\nExample: ${prefix + command} limit 10`)
