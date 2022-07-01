@@ -1024,14 +1024,19 @@ module.exports = async (sock, m) => {
             break
             case 'dl_': {
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
-                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let [a, b] = args
                 if (a.toLowerCase() === "audio") {
-                    sock.sendMessage(m.from, { audio: { url: isUrl(b)[0] }, mimetype: "audio/mpeg", fileName: ".mp3" }, { quoted: m })
-                    user.limitAdd(m.sender, isPremium, isOwner, _user)
+                    const zen = getRandom('mp3')
+                    ffmpeg(b)
+                    .audioBitrate(128)
+                    .save('./temp/' + zen)
+                    .on('end', () => {
+                        sock.sendFile(m.from, fs.readFileSync('./temp/' + zen), "", m).then(data => {
+                            fs.unlinkSync('./temp/' + zen);
+                        })
+                    })
                 } else {
                     sock.sendFile(m.from, isUrl(a)[0], "", m)
-                    user.limitAdd(m.sender, isPremium, isOwner, _user)
                 }
             }
             break
@@ -1259,7 +1264,8 @@ module.exports = async (sock, m) => {
                 let caption = `*Youtube Downloader*\n\n`
                 let i = fetch.result
                 caption += `⭔ Title : ${i.title}\n`
-                caption += `⭔ Size : ${i.size}\n`
+                caption += `⭔ Audio Size : ${i.sizeAudio}\n`
+                caption += `⭔ Video Size : ${i.sizeVideo}\n`
                 caption += `⭔ Views : ${i.views}\n`
                 caption += `⭔ Likes : ${i.likes}\n`
                 caption += `⭔ Dislike : ${i.dislike}\n`
@@ -1267,7 +1273,7 @@ module.exports = async (sock, m) => {
                 caption += `⭔ UploadDate : ${i.uploadDate}\n\n`
                 caption += `⭔ Desc : ${i.desc}\n`
                 let buttons = [
-                    { buttonId: `${prefix}dl_ audio ${i.getVideo}`, buttonText: { displayText: 'Get Audio'}, type: 1 },
+                    { buttonId: `${prefix}dl_ audio ${i.getAudio}`, buttonText: { displayText: 'Get Audio'}, type: 1 },
                     { buttonId: `${prefix}dl_ ${i.getVideo}`, buttonText: { displayText: 'Get Video'}, type: 1 }
                 ]
                 let buttonMessage = {
@@ -1287,7 +1293,8 @@ module.exports = async (sock, m) => {
                 let caption = `*Youtube Play*\n\n`
                 let i = fetch.result
                 caption += `⭔ Title : ${i.title}\n`
-                caption += `⭔ Size : ${i.size}\n`
+                caption += `⭔ Audio Size : ${i.sizeAudio}\n`
+                caption += `⭔ Video Size : ${i.sizeVideo}\n`
                 caption += `⭔ Views : ${i.views}\n`
                 caption += `⭔ Likes : ${i.likes}\n`
                 caption += `⭔ Dislike : ${i.dislike}\n`
@@ -1295,7 +1302,7 @@ module.exports = async (sock, m) => {
                 caption += `⭔ UploadDate : ${i.uploadDate}\n\n`
                 caption += `⭔ Desc : ${i.desc}\n`
                 let buttons = [
-                    { buttonId: `${prefix}dl_ audio ${i.getVideo}`, buttonText: { displayText: 'Get Audio'}, type: 1 },
+                    { buttonId: `${prefix}dl_ audio ${i.getAudio}`, buttonText: { displayText: 'Get Audio'}, type: 1 },
                     { buttonId: `${prefix}dl_ ${i.getVideo}`, buttonText: { displayText: 'Get Video'}, type: 1 }
                 ]
                 let buttonMessage = {
@@ -2526,7 +2533,7 @@ module.exports = async (sock, m) => {
             break
             case 'animeme': case 'animememe': {
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
-                let fetch = await global.api("zenz", "/randomanime/animeme", {}, "apikey")
+                let fetch = await fetchUrl(global.api("zenz", "/randomanime/animeme", {}, "apikey"))
                 let buttons = [
                     {buttonId: `${prefix}animeme`, buttonText: { displayText: 'NEXT'}, type: 1 }
                 ]
@@ -2543,7 +2550,7 @@ module.exports = async (sock, m) => {
             break
             case 'hololive': {
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
-                let fetch = await global.api("zenz", "/randomanime/hololive", {}, "apikey")
+                let fetch = await fetchUrl(global.api("zenz", "/randomanime/hololive", {}, "apikey"))
                 let buttons = [
                     {buttonId: `${prefix}hololive`, buttonText: { displayText: 'NEXT'}, type: 1 }
                 ]
@@ -2693,7 +2700,7 @@ module.exports = async (sock, m) => {
             // RANDOMIMAGE COMMNAND
             case 'minecraft': {
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
-                let fetch = await global.api("zenz", "/randomanime/minecraft", {}, "apikey")
+                let fetch = await fetchUrl(global.api("zenz", "/randomimage/minecraft", {}, "apikey"))
                 let buttons = [
                     {buttonId: `${prefix}minecraft`, buttonText: { displayText: 'NEXT'}, type: 1 }
                 ]
