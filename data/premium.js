@@ -37,7 +37,8 @@ const getPremiumExpired = (userId, _db) => {
    }
 }
 
-const checkPremiumUser = (userId, _db) => {
+const checkPremiumUser = (userId, isOwner, _db) => {
+   if (isOwner) return true
    let status = false
    Object.keys(_db).forEach((i) => {
       if (_db[i].id === userId) {

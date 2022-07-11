@@ -27,7 +27,7 @@ module.exports = async (sock, m) => {
         const isBotGroupAdmins = groupAdmins.includes(sock.user?.jid)
         const isOwner = [sock.user?.jid, ...config.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(sender)
 
-        const isPremium = premium.checkPremiumUser(m.sender, _premium)
+        const isPremium = premium.checkPremiumUser(m.sender, isOwner, _premium)
         const isAfkOn = afk.checkAfkUser(m.sender, _afk) 
         const isLevelingOn = group.cekLeveling(m.from, _group)
         const isAntidelete = group.cekAntidelete(m.from, _group)
@@ -242,13 +242,14 @@ module.exports = async (sock, m) => {
         }
         
         if (config.options.self && !isOwner && !m.fromMe) return
-        if (command && !isGroup) return global.mess("group", m)
+        // if (command && !isGroup) return global.mess("group", m)
 
         switch (command) {
 
             // ANIMEWEB COMMNAND
             case 'animeplanet': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/animeplanet", { query: q }, "apikey"))
                 let caption = `Animeplanet Search :\n\n`
@@ -261,7 +262,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'anoboy': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/anoboy/search", { query: text }, "apikey"))
                 let caption = `Anoboy Search :\n\n`
@@ -274,6 +276,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'doujindesu': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (isUrl(text)) {
@@ -323,7 +326,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'kiryuu': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/kiryuu", { query: text }, "apikey"))
                 let caption = `Kiryuu Search :\n\n`
@@ -338,7 +342,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'kissmanga': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/kissmanga", { query: text }, "apikey"))
                 let caption = `Kissmanga Search :\n\n`
@@ -351,7 +356,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'klikmanga': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/klikmanga", { query: text }, "apikey"))
                 let caption = `Klikmanga Search :\n\n`
@@ -370,7 +376,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'komikstation': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/komikstation", { query: text }, "apikey"))
                 let caption = `Komikstation Search :\n\n`
@@ -384,7 +391,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'mangatoon': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/mangatoon", { query: text }, "apikey"))
                 let caption = `Mangatoon Search :\n\n`
@@ -398,7 +406,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'mynime': case 'mynimeku': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (isUrl(text)) {
                     let fetch = await fetchUrl(global.api("zenz", "/animeweb/mynime/detail", { url: isUrl(text)[0] }, "apikey"))
@@ -433,6 +442,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nekopoi': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (text.toLowerCase() === "random") {
@@ -478,8 +488,9 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nhentai': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/nhentai", { query: text }, "apikey"))
                 let caption = `Nhentai Search :\n\n`
@@ -504,7 +515,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'otakudesu': {
-                if (!q) return m.reply(`Example: ${prefix + command} url | query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} url | query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (isUrl(text)) {
                     let fetch = await fetchUrl(global.api("zenz", "/animeweb/otakudesu/info", { url: isUrl(text)[0] }, "apikey"))
@@ -542,6 +554,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'sauce': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 const mime = (quoted.msg || m.msg).mimetype
                 if (/image|video|sticker/.test(mime)) {
@@ -587,10 +600,20 @@ module.exports = async (sock, m) => {
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
+            case 'mal': case 'myanime': {
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                let fetch = await fetchUrl(global.api("zenz", "/animeweb/animesearch", { query: text }, "apikey"))
+                m.reply(JSON.stringify(fetch.result, null, 2))
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
 
             // CONVERT COMMNAND
             case 'emoji': {
-                if (!q) return m.reply(`List Type :\n\n${emoji_type().sort((a, b) => a - b).join("\n")}\n\nEmoji : ${prefix + command} 🤔\nEmoji 2 : ${prefix + command} 🤔 <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${emoji_type().sort((a, b) => a - b).join("\n")}\n\nEmoji : ${prefix + command} 🤔\nEmoji 2 : ${prefix + command} 🤔 <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
                 let [a, b] = args
@@ -664,7 +687,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'emojimix': {
-                if (!q) return m.reply(`Example: \nEmojimix : ${prefix + command} 🤔\nEmojimix 2 : ${prefix + command} 😅🤔`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: \nEmojimix : ${prefix + command} 🤔\nEmojimix 2 : ${prefix + command} 😅🤔`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
                 let [a, b] = args.join("")
@@ -676,7 +700,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'shorturl': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/convert/shorturl", { url: isUrl(text)[0] }, "apikey"))
                 sock.sendText(m.from, fetch.result, m)
@@ -684,6 +709,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'stickerc': case 'scircle': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
@@ -714,6 +740,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'sticker': case 'stiker': case 's': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
@@ -733,6 +760,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'stickernobg': case 'stickerbg': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
                 const mime = (quoted.msg || m.msg).mimetype
@@ -762,6 +790,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'stickerp': case 'stikerp': case 'stickernocrop': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
@@ -782,6 +811,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'takesticker': case 'take': case 'colong': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
                 const mime = (quoted.msg || m.msg).mimetype
@@ -797,6 +827,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'toimg': case 'toimage': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command}`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
@@ -817,6 +848,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tourl': case 'uploader': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command}`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 const mime = (quoted.msg || m.msg).mimetype
@@ -846,7 +878,8 @@ module.exports = async (sock, m) => {
                 }
             }
             break
-            case 'tovideo': case 'tomedia': {
+            case 'tovideo': case 'tomedia': case 'tomp4': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command}`)
                 const mime = (quoted.msg || m.msg).mimetype
@@ -867,6 +900,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'whatmusic': case 'findmusic': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
                 const mime = (quoted.msg || m.msg).mimetype
@@ -902,7 +936,8 @@ module.exports = async (sock, m) => {
             
             // CREATOR COMMNAND
             case 'attp': case 'botcomment': case 'changemymind': case 'hartatahta': case 'kannagen': case 'nuliskanan': case 'nuliskiri': case 'trump': case 'ttp': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 sock.sendFile(m.from, global.api("zenz", "/creator/" + command, { 
                     text: text 
@@ -911,6 +946,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tahtacustom': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!text.includes('|')) return m.reply(`Example : ${prefix + command} atas|tengah|bawah`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let [a, b, c] = text.split`|`
@@ -923,6 +959,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'ttpcustom': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!text.includes('|')) return m.reply(`Example : ${prefix + command} text|gold|black`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let [a, b, c] = text.split`|`
@@ -935,6 +972,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'smeme': case 'stickermeme': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
@@ -972,7 +1010,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'ytcomment': case 'phcomment': case 'maketweet':case 'captcha': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 sock.sendFile(m.from, global.api("zenz", "/creator/" + command, {
                     url: "https://tse2.mm.bing.net/th?id=OIP.n1C1oxOvYLLyDIavrBFoNQHaHa&pid=Api&P=0&w=153&h=153",
@@ -983,6 +1022,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'waifu2x': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
@@ -1015,6 +1055,7 @@ module.exports = async (sock, m) => {
 
             // DOWNLOADER COMMNAND
             case 'cocofun': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/cocofun", { url: isUrl(text)[0] }, "apikey"))
@@ -1023,6 +1064,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'dl_': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let [a, b] = args
                 if (a.toLowerCase() === "audio") {
@@ -1041,6 +1083,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'facebook': case 'fbdl': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/facebook", { url: isUrl(text)[0] }, "apikey"))
@@ -1065,6 +1108,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'gore': case 'gorevideo': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/gore", {}, "apikey"))
@@ -1073,6 +1117,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'hentaivideo': case 'hentaivid': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (text.toLowerCase() === "longer") {
@@ -1087,6 +1132,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'instagram': case 'ig': case 'igdl': case 'igtv': case 'igreel': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram", { url:isUrl(text)[0] }, "apikey"))
@@ -1094,8 +1140,9 @@ module.exports = async (sock, m) => {
             }
             break
             case 'instastory': case 'igstory': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
-                if (!q) return m.reply(`Example: ${prefix + command} url or username`)
+                if (!text) return m.reply(`Example: ${prefix + command} url or username`)
                 if (isUrl(text)) {
                     let fetch = await fetchUrl(global.api("zenz", "/downloader/instastory", { url:isUrl(text)[0] }, "apikey"))
                     sock.sendFile(m.from, fetch.result.media[0].url, "", m, { caption: `Download Story From : ${isUrl(text)[0]}\n\nType: ${fetch.result.type}` })
@@ -1106,8 +1153,9 @@ module.exports = async (sock, m) => {
             }
             break
             case 'joox': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/joox", { query: text }, "apikey"))
                 let teks = `⭔ Title : ${fetch.result.lagu}\n⭔ Album : ${fetch.result.album}\n⭔ Penyanyi : ${fetch.result.penyanyi}\n⭔ Publish : ${fetch.result.publish}`
                 let buttons = [
@@ -1125,6 +1173,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'mediafire': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/mediafire", { url: isUrl(text)[0] }, "apikey"))
@@ -1132,13 +1181,23 @@ module.exports = async (sock, m) => {
             }
             break
             case 'pinterest': case 'pinvideo': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/pinterestdl", { url: isUrl(text)[0] }, "apikey"))
-                sock.sendFile(m.from, fetch.result, "", m, { caption: `Download Pinterest Video From : ${isUrl(text)[0]}` })
+                const zen = getRandom('mp4')
+                    ffmpeg(fetch.result)
+                    .audioBitrate(128)
+                    .save('./temp/' + zen)
+                    .on('end', () => {
+                        sock.sendFile(m.from, fs.readFileSync('./temp/' + zen), "", m).then(data => {
+                            fs.unlinkSync('./temp/' + zen);
+                        })
+                    })
             }
             break
             case 'soundcloud': case 'scdl': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/soundcloud", { url: isUrl(text)[0] }, "apikey"))
@@ -1146,6 +1205,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tiktok': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/musically", { url: isUrl(text)[0] }, "apikey"))
@@ -1164,6 +1224,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tiktokporn': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/tikporn", {}, "apikey"))
@@ -1172,6 +1233,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tiktokmp3': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/musically", { url: isUrl(text)[0] }, "apikey"))
@@ -1191,6 +1253,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tiktokwm': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/tiktok", { url: isUrl(text)[0] }, "apikey"))
@@ -1209,6 +1272,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'twitter': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/twitter", { url: isUrl(text)[0] }, "apikey"))
@@ -1231,6 +1295,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'twittermp3': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/twitter", { url: isUrl(text)[0] }, "apikey"))
@@ -1249,6 +1314,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'xnxx': case 'xvideos': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
@@ -1258,6 +1324,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'youtube': case 'ytdl': case 'ytshorts': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/youtube", { url: isUrl(text)[0] }, "apikey"))
@@ -1287,8 +1354,9 @@ module.exports = async (sock, m) => {
             }
             break
             case 'ytplay': case 'play': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/ytplay", { query: text }, "apikey"))
                 let caption = `*Youtube Play*\n\n`
                 let i = fetch.result
@@ -1316,6 +1384,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'zippyshare': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/zippyshare", { url: isUrl(text)[0] }, "apikey"))
@@ -1325,6 +1394,7 @@ module.exports = async (sock, m) => {
 
             // ENTERTAINMENT COMMNAND
             case 'asahotak': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (asahotak.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1342,6 +1412,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'caklontong': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (caklontong.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1359,6 +1430,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'family100': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (family100.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1376,7 +1448,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'jagokata': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/jagokata", { query: text }, "apikey"))
                 let caption = `Jago Kata Query : ${text}\n\n`
@@ -1388,6 +1461,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'siapakah': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (siapakah.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1405,7 +1479,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'simi': {
-                if (!q) return m.reply('Mau Nanya Apa ?')
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply('Mau Nanya Apa ?')
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 try {
                     let fetch = await fetchUrl(global.api("zenz", "/entertainment/simisimi", { text: encodeURIComponent(text) }, "apikey"))
@@ -1418,6 +1493,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'susunkata': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (susunkata.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1435,6 +1511,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebakbendera': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebakbendera.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1452,6 +1529,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebakgambar': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1469,6 +1547,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebakkabupaten': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebakkabupaten.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1487,6 +1566,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebakkalimat': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebakkalimat.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1504,6 +1584,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebakkata': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebakkata.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1521,6 +1602,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebaklagu': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1538,6 +1620,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebaklagu2': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1554,6 +1637,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebaklirik': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebaklirik.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1571,6 +1655,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tebaktebakan': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tebaktebakan.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1589,6 +1674,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tekateki': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (tekateki.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
@@ -1606,6 +1692,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'dare': case 'truth': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/" + command, {}, "apikey"))
                 sock.sendText(m.from, fetch.result, m)
@@ -1613,9 +1700,9 @@ module.exports = async (sock, m) => {
             }
             break
 
-            // GROUP COMMNAN
+            // GROUP COMMNAND
             case 'leveling': {
-                if (!isGroup) return global.mess("group", m)
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isGroupAdmins) return global.mess("admin", m)
                 if (text === 'enable') {
                     if (isLevelingOn === true) return m.reply('Leveling already active')
@@ -1641,7 +1728,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nsfw': {
-                if (!isGroup) return global.mess("group", m)
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isGroupAdmins) return global.mess("admin", m)
                 if (text === 'enable') {
                     if (isNsfw === true) return m.reply('Nsfw already active')
@@ -1667,7 +1754,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'offline': {
-                if (!isGroup) return global.mess("group", m)
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isGroupAdmins) return global.mess("admin", m)
                 if (text === 'enable') {
                     if (isOffline === true) return m.reply('BOT Offline already active')
@@ -1695,7 +1782,8 @@ module.exports = async (sock, m) => {
 
             // INFORMATION COMMNAND
             case 'blogger': case 'blogspot': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/information/blogger", { query: text }, "apikey"))
                 sock.sendText(m.from, fetch.result, m)
@@ -1703,6 +1791,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'covid': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/information/covidworld", {}, "apikey"))
                 let caption = `Covid-19 Information :\n\n`
@@ -1718,6 +1807,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'gempa': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/information/bmkg/gempa", {}, "apikey"))
                 let caption = `Gempa Information :\n\n`
@@ -1739,7 +1829,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'iplookup': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/information/iplookup", { query: text }, "apikey"))
                 let caption = `IP Information :\n\n`
@@ -1765,7 +1856,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'kbbi': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/information/kbbi", { query: text }, "apikey"))
                 let caption = `Arti Kbbi Dari ${text} :\n\n`
@@ -1776,6 +1868,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'mpl': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/information/mpl", {}, "apikey"))
                 let caption = `MPL Information :\n\n`
@@ -1791,8 +1884,8 @@ module.exports = async (sock, m) => {
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
-            case 'translate': {
-                if (!q) return m.reply(`Example: ${prefix + command} en|query`)
+            case 'translate': case 'tr': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!text.includes('|')) return m.reply(`Example : ${prefix + command} en|query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let [a, b] = text.split`|`
@@ -1805,7 +1898,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'wikia': case 'wikien': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/information/wikia", { query: text }, "apikey"))
                 sock.sendText(m.from, fetch.result, m)
@@ -1813,7 +1907,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'wikipedia': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/information/wikipedia", { query: text }, "apikey"))
                 let caption = `Wikipedia Dari ${text} :\n\n`
@@ -1826,6 +1921,7 @@ module.exports = async (sock, m) => {
             
             // ISLAMI COMMNAND
             case 'audioayat': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!text.includes('|')) return m.reply(`Example : ${prefix + command} 1|1`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let [a, b] = text.split`|`
@@ -1834,12 +1930,14 @@ module.exports = async (sock, m) => {
             }
             break
             case 'audiosurah': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 sock.sendFile(m.from, global.api("zenz", `/islami/quran/audio/${text}`, {}, "apikey"), "", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
             case 'jadwalsholat': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/islami/jadwalshalat", { kota: text }, "apikey"))
                 let i = fetch.result
@@ -1856,6 +1954,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'kisahmuslim': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/islami/kisahmuslim", {}, "apikey"))
                 let teks = `⭔ Judul : ${fetch.result.Judul}\n⭔ Kisah :\n${fetch.result.Cerita}`
@@ -1864,6 +1963,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'kisahnabi': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (text) {
                     title = text.toLowerCase()
@@ -1913,6 +2013,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'listkota': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/islami/listkota", {}, "apikey"))
                 let teks = `List Kota Di seluruh Indonesia\n\n`
@@ -1926,6 +2027,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'listsurah': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/islami/listsurah", {}, "apikey"))
                 let teks = `List Surah Al-quran\n\n`
@@ -1966,6 +2068,7 @@ module.exports = async (sock, m) => {
             break
             
             case 'premlist': case 'premiumlist': {
+                if (command && !isGroup) return global.mess("group", m)
                 let data = _premium
                 let caption = `List Prem\nAmount : ${data.length}\n\n`
                 for (let i of data) {
@@ -1978,8 +2081,9 @@ module.exports = async (sock, m) => {
 
             // MORENSFW COMMNAND
             case 'mnsfwimage': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
-                if (!q) return m.reply(`List Type :\n\n${mnsfw_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (!text) return m.reply(`List Type :\n\n${mnsfw_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await global.api("zenz", "/api/morensfw/" + text, {}, "apikey")
                 let buttons = [
@@ -2001,6 +2105,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'mnsfwmenu': {
+                if (command && !isGroup) return global.mess("group", m)
                 const sections = [{
                     title: "Morensfw",
                     rows: [
@@ -2046,7 +2151,8 @@ module.exports = async (sock, m) => {
 
             // NEKOSLIFE COMMNAND
             case 'sfwgif': {
-                if (!q) return m.reply(`List Type :\n\n${sfwgif_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${sfwgif_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await global.api("zenz", "/api/anime/sfw/" + text, {}, "apikey")
                 sock.sendFile(m.from, fetch, "", m, { asSticker: true, author: config.exif.author, packname: config.exif.packname, categories: ['😄','😊'] })
@@ -2057,7 +2163,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'sfwimage': {
-                if (!q) return m.reply(`List Type :\n\n${sfwimage_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${sfwimage_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await global.api("zenz", "/api/anime/sfw/" + text, {}, "apikey")
                 let buttons = [
@@ -2078,6 +2185,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'sfwmenu': {
+                if (command && !isGroup) return global.mess("group", m)
                 const sections = [{
                     title: "Sfw",
                     rows: [
@@ -2118,6 +2226,7 @@ module.exports = async (sock, m) => {
             break
             // NEWS COMMNAND
             case 'antaranews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/antaranews", {}, "apikey"))
                 let caption = `Latest News From Antaranews\n\n`
@@ -2132,6 +2241,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'bbcnews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/bbc", {}, "apikey"))
                 let caption = `Latest News From BBC\n\n`
@@ -2145,6 +2255,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'cnbcnews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/cnbc", {}, "apikey"))
                 let caption = `Latest News From CNBC\n\n`
@@ -2158,6 +2269,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'dailynews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/dailynews", {}, "apikey"))
                 let caption = `Latest News From Dailynews\n\n`
@@ -2170,6 +2282,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'detiknews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/detiknews", {}, "apikey"))
                 let caption = `Latest News From Detiknews\n\n`
@@ -2183,6 +2296,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'inews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/inews", {}, "apikey"))
                 let caption = `Latest News From inews\n\n`
@@ -2197,6 +2311,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'kompasnews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/kompas", {}, "apikey"))
                 let caption = `Latest News From Kompasnews\n\n`
@@ -2211,6 +2326,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'kontanews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/kontanews", {}, "apikey"))
                 let caption = `Latest News From Kontanews\n\n`
@@ -2225,6 +2341,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'koransindo': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/koransindo", {}, "apikey"))
                 let caption = `Latest News From Koransindo\n\n`
@@ -2238,6 +2355,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'okezone': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/okezone", {}, "apikey"))
                 let caption = `Latest News From Okezone\n\n`
@@ -2251,6 +2369,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'temponews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/temponews", {}, "apikey"))
                 let caption = `Latest News From Temponews\n\n`
@@ -2264,6 +2383,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'tribunews': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/news/tribunews", {}, "apikey"))
                 let caption = `Latest News From Tribunews\n\n`
@@ -2296,7 +2416,7 @@ module.exports = async (sock, m) => {
             break
             case 'join': {
                 if (!isOwner) return global.mess("owner", m)
-                if (!q) return m.reply(`Example: ${prefix + command} url`)
+                if (!text) return m.reply(`Example: ${prefix + command} url`)
                 if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return m.reply("Invalid Link")
                 let result = args[0].split('https://chat.whatsapp.com/')[1]
                 await sock.groupAcceptInvite(result).then((res) => m.reply("Done")).catch((err) => m.reply("Error"))
@@ -2334,8 +2454,9 @@ module.exports = async (sock, m) => {
             }
             break
             case 'getcase': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isOwner) return global.mess("owner", m)
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 try {
                     m.reply("case" + text + fs.readFileSync('./sock.js').toString().split('case \''+ text +'\'')[1].split("break")[0] + "break")
                 } catch {
@@ -2369,6 +2490,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'hidetag': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isOwner && !isGroup) return m.reply('?')
                 if (m.quoted) {
                     sock.sendMessage(m.from, { forward: m.quoted.fakeObj, mentions: groupMembers.map(a => a.id) })
@@ -2381,6 +2503,7 @@ module.exports = async (sock, m) => {
             // PHOTOEDITOR COMMNAND
             case 'blur': case 'brighten': case 'circle': case 'comrade': case 'contrast': case 'gay': case 'glass': case 'greyscale': case 'horny':
             case 'invert': case 'jail': case 'passed': case 'pixelate': case '2x': case 'triggered': case 'sepia': case 'upscale': case 'wasted': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command}`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 const mime = (quoted.msg || m.msg).mimetype
@@ -2411,7 +2534,8 @@ module.exports = async (sock, m) => {
             
             // PRIMBON COMMNAND
             case 'artimimpi': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/primbon/" + command, { query: text }, "apikey"))
                 let caption = `Primbon ${command} :\n\n`
@@ -2423,7 +2547,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'artinama': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/primbon/" + command, { text: text }, "apikey"))
                 let caption = `Primbon ${command} :\n\n`
@@ -2435,7 +2560,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'shio': case 'cekshio': {
-                if (!q) return m.reply(`List Type :\n\n${shio_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${shio_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/primbon/shio", { query: text }, "apikey"))
                 let caption = `Primbon Arti Shio :\n\n`
@@ -2449,7 +2575,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'zodiak': case 'cekzodiak': {
-                if (!q) return m.reply(`List Type :\n\n${zodiak_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${zodiak_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/primbon/zodiak", { query: text }, "apikey"))
                 let caption = `Primbon Arti Zodiak :\n\n`
@@ -2485,6 +2612,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'haribaik': case 'harilarangan': case 'jadian': case 'rejekiweton': {
+                if (command && !isGroup) return global.mess("group", m)
                 let [a, b, c] = args
                 if (!a, !b, !c) return m.reply(`Example : ${prefix + command} 11 06 2007`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
@@ -2497,7 +2625,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nomerhoki': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/primbon/nomerhoki", { query: text }, "apikey"))
                 let caption = `Primbon Nomer Hoki :\n\n`
@@ -2524,6 +2653,7 @@ module.exports = async (sock, m) => {
 
             // RANDOMANIME COMMNAND
             case 'animecouple': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomanime/couples", {}, "apikey"))
                 sock.sendFile(m.from, fetch.result.male, "", m, { caption: "Random Anime Couples Male" })
@@ -2532,6 +2662,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'animeme': case 'animememe': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomanime/animeme", {}, "apikey"))
                 let buttons = [
@@ -2549,6 +2680,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'hololive': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomanime/hololive", {}, "apikey"))
                 let buttons = [
@@ -2566,6 +2698,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'animemenu': {
+                if (command && !isGroup) return global.mess("group", m)
                 const sections = [{
                     title: "Random Image",
                     rows: [
@@ -2612,7 +2745,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'randomanime': {
-                if (!q) return m.reply(`List Type :\n\n${randomanime_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${randomanime_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await global.api("zenz", "/randomanime/" + text, {}, "apikey")
                 let buttons = [
@@ -2635,6 +2769,7 @@ module.exports = async (sock, m) => {
 
             // RANDOMASUPAN COMMNAND
             case 'asupan': case 'aeunicetjoaa': case 'natajadeh': case 'asupantiktok': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await global.api("zenz", "/randomasupan/" + command, {}, "apikey")
                 sock.sendFile(m.from, fetch, "", m, { caption: "Random TikTok Asupan" })
@@ -2642,7 +2777,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'randomasupan': {
-                if (!q) return m.reply(`List Type :\n\n${randomasupan_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${randomasupan_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await global.api("zenz", "/randomasupan/" + text, {}, "apikey")
                 let buttons = [
@@ -2663,6 +2799,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'asupanmenu': {
+                if (command && !isGroup) return global.mess("group", m)
                 const sections = [{
                     title: "Random Asupan MP4",
                     rows: [
@@ -2699,6 +2836,7 @@ module.exports = async (sock, m) => {
 
             // RANDOMIMAGE COMMNAND
             case 'minecraft': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomimage/minecraft", {}, "apikey"))
                 let buttons = [
@@ -2716,6 +2854,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'imagemenu': {
+                if (command && !isGroup) return global.mess("group", m)
                 const sections = [{
                     title: "Random Image",
                     rows: [
@@ -2751,7 +2890,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'randomimage': {
-                if (!q) return m.reply(`List Type :\n\n${randomimage_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${randomimage_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await global.api("zenz", "/randomimage/" + text, {}, "apikey")
                 let buttons = [
@@ -2795,6 +2935,7 @@ module.exports = async (sock, m) => {
             
             // RANDOMTEXT COMMNAND
             case 'animequote': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomtext/animequotes2", {}, "apikey"))
                 let caption = `Generate Random Anime Quotes :\n\n`
@@ -2807,6 +2948,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'cerpen': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomtext/cerpen", {}, "apikey"))
                 let caption = `Generate Random Cerpen :\n\n`
@@ -2819,6 +2961,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'cersex': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomtext/cersex2", {}, "apikey"))
@@ -2831,7 +2974,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'randomtext': {
-                if (!q) return m.reply(`List Type :\n\n${randomtext_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${randomtext_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/randomtext/" + text, {}, "apikey"))
                 let buttons = [
@@ -2851,6 +2995,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'textmenu': {
+                if (command && !isGroup) return global.mess("group", m)
                 const sections = [{
                     title: "Random Text",
                     rows: [
@@ -2890,7 +3035,8 @@ module.exports = async (sock, m) => {
 
             // SEARCH COMMNAND
             case 'animequotes': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/animequotes", { query: text }, "apikey"))
                 let caption = `Anime Quotes Query : ${text}\n\n`
@@ -2904,7 +3050,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'bacaresep': case 'resep': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/bacaresep", { query: text }, "apikey"))
                 let caption = `Resep : ${text}\n\n`
@@ -2919,7 +3066,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'chordlagu': case 'chord': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/chordlagu", { query: text }, "apikey"))
                 let caption = `Chord Lagu Search Query : ${text}\n\n`
@@ -2930,7 +3078,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'dafont': case 'dafontsearch': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/dafontsearch", { query: text }, "apikey"))
                 for (let i = 0; i < (fetch.result.length < 6 ? fetch.result.length : 6); i++) {
@@ -2940,8 +3089,9 @@ module.exports = async (sock, m) => {
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
-            case 'gimage': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+            case 'gimage': case 'gis': {
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/gimage", { query: text }, "apikey"))
                 let random = fetch.result[Math.floor(Math.random() * fetch.result.length)]
@@ -2960,7 +3110,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'jadwaltv': {
-                if (!q) return m.reply(`List Type :\n\n${jadwaltv_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`List Type :\n\n${jadwaltv_type().sort((a, b) => a - b).join("\n")}\n\nExample : ${prefix + command} <type>`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/jadwaltv", { query: text }, "apikey"))
                 let caption = `Jadwal TV Search Query : ${text}\n\n`
@@ -2976,7 +3127,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'liriklagu': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/liriklagu", { query: text }, "apikey"))
                 let caption = `Lyric Search Query : ${text}\n\n`
@@ -2989,7 +3141,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'pin': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/pinterest", { query: text }, "apikey"))
                 let random = fetch.result[Math.floor(Math.random() * fetch.result.length)]
@@ -3008,8 +3161,9 @@ module.exports = async (sock, m) => {
             }
             break
             case 'pixiv': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (text) {
                     let fetch = await fetchUrl(global.api("zenz", "/searching/pixiv", { query: text }, "apikey"))
@@ -3045,7 +3199,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'sfilesearch': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/sfilesearch", { query: text }, "apikey"))
                 let caption = `sfile Search Query : ${text}\n\n`
@@ -3058,7 +3213,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'ssearch': case 'stickersearch': case 'stikersearch': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/stickersearch", { query: text }, "apikey"))
                 for (let url of fetch.result) {
@@ -3069,7 +3225,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'styletext': case 'fancytext': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/styletext", { query: text }, "apikey"))
                 let caption = `Text Style Query : ${text}\n\n`
@@ -3082,6 +3239,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'trending': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (text) {
                     let fetch = await fetchUrl(global.api("zenz", "/searching/trendtwit", { query: text }, "apikey"))
@@ -3107,7 +3265,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'wagroup': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/wagroup", { query: text }, "apikey"))
                 let caption = `WA Group Search Query : ${text}\n\n`
@@ -3120,7 +3279,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'wamod': case 'wamods': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/wamods", { query: text }, "apikey"))
                 let caption = `Wamods Search Query : ${text}\n\n`
@@ -3134,8 +3294,9 @@ module.exports = async (sock, m) => {
             }
             break
             case 'xnxxsearch': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/xnxx", { query: text }, "apikey"))
                 let caption = `Xnxx Search Query : ${text}\n\n`
@@ -3149,8 +3310,9 @@ module.exports = async (sock, m) => {
             }
             break
             case 'xvideosearch': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isNsfw) return global.mess("isNsfw", m)
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/xvideos", { query: text }, "apikey"))
                 let caption = `Xvideos Search Query : ${text}\n\n`
@@ -3165,7 +3327,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'ytsearch': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/ytsearch", { query: text }, "apikey"))
                 let caption = `YouTube Search Query : ${text}\n\n`
@@ -3187,7 +3350,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'zerochan': case 'zchan': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/zerochan", { query: text }, "apikey"))
                 let random = fetch.result[Math.floor(Math.random() * fetch.result.length)]
@@ -3208,7 +3372,8 @@ module.exports = async (sock, m) => {
 
             // STALKER COMMNAND
             case 'cekapi': case 'cekapikey': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 try {
                     let fetch = await fetchUrl(global.api("zenz", "/user/cekapi", {apikey: text}))
                     let caption = `Apikey Checker :\n\n`
@@ -3236,7 +3401,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'stalkig': case 'igstalk': {
-                if (!q) return m.reply(`Example: ${prefix + command} username`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} username`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/stalker/ig", { username: text }, "apikey"))
                 let caption = `Instagram Profile Stalker :\n\n`
@@ -3258,7 +3424,8 @@ module.exports = async (sock, m) => {
             break
             case 'nickaov': case 'nickautochess': case 'nickbigolive': case 'nickcocofun': case 'nickcod': case 'nickdomino': case 'nickdragonraja': case 'nicksdriver': case 'nickff': case 'nickhago': case 'nicklokapala':
             case 'nicknimotv': case 'nickpb': case 'nickpubg': case 'nicksausage': case 'nickzepeto': {
-                if (!q) return m.reply(`Example: ${prefix + command} ID`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} ID`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/stalker/" + command, { query: text }, "apikey"))
                 let caption = `${command} Stalker :\n\n`
@@ -3270,6 +3437,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nickml': case 'nickkmladventure': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!text.includes('|')) return m.reply(`Example : ${prefix + command} ID|SERVER`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let text1 = text.split("|")[0]
@@ -3288,6 +3456,7 @@ module.exports = async (sock, m) => {
             // TEXTMAKER COMMNAND
             // USERS COMMNAND
             case 'inv': case 'tas': case 'inventory': {
+                if (command && !isGroup) return global.mess("group", m)
                 const balance = user.getBalance(m.sender, _user)
                 const fish = rpg.getIkan(m.sender, _rpg)
                 const batu = rpg.getBatu(m.sender, _rpg)
@@ -3313,6 +3482,7 @@ module.exports = async (sock, m) => {
             }
 			break
             case 'cekpremium': case 'cekprem': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 let cekprem = require("parse-ms")((await premium.getPremiumExpired(m.sender, _premium)) - Date.now())
                 let caption = `*Expired :* ${cekprem.days} day ${cekprem.hours} hour ${cekprem.minutes} minute ${cekprem.seconds} Second`
@@ -3320,6 +3490,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'profile': case 'me': {
+                if (command && !isGroup) return global.mess("group", m)
                 let statuses
                 try {
                     statuses = await sock.fetchStatus(m.sender);
@@ -3355,11 +3526,13 @@ module.exports = async (sock, m) => {
             }
             break
             case 'hapus': case 'delete': case 'del': case 'd': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!m.quoted) return m.reply('Reply pesanya!')
                 sock.sendMessage(from, { delete: { remoteJid: from, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } })
             }
             break
             case 'leaderboard': case 'leaderboards': {
+                if (command && !isGroup) return global.mess("group", m)
                 const resp = _user
                 _user.sort((a, b) => (a.xp < b.xp) ? 1 : -1)
                 let leaderboard = '*TOP 10 LEADERBOARD*\n\n'
@@ -3398,7 +3571,8 @@ module.exports = async (sock, m) => {
 
             // WEBZONE COMMNAND
             case 'amino': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/webzone/amino", { query: text }, "apikey"))
                 let caption = `Amino Search Query : ${text}\n\n`
@@ -3413,7 +3587,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'drakor': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/webzone/drakor", { query: text }, "apikey"))
                 let caption = `Drakor Search Query : ${text}\n\n`
@@ -3429,7 +3604,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'gsmarena': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/webzone/gsmarena", { query: text }, "apikey"))
                 let caption = `Gsmarena Search Query : ${text}\n\n`
@@ -3452,7 +3628,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'jadwalbioskop': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/webzone/jadwalbioskop", { kota: text }, "apikey"))
                 let caption = `Jadwal Bioskop Kota : ${text}\n\n`
@@ -3466,6 +3643,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nowplaying': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/webzone/nowplayingbioskop", {}, "apikey"))
                 let caption = `Now Bioskop Playing :\n\n`
@@ -3479,7 +3657,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'playstore': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/webzone/playstore", { query: text }, "apikey"))
                 let caption = `PlayStore Search Query : ${text}\n\n`
@@ -3495,7 +3674,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'wattpad': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/webzone/wattpad", { query: text }, "apikey"))
                 let caption = `Wattpad Search Query : ${text}\n\n`
@@ -3514,7 +3694,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'webtoons': {
-                if (!q) return m.reply(`Example: ${prefix + command} query`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/webzone/webtoons", { query: text }, "apikey"))
                 let caption = `Webtoons Search Query : ${text}\n\n`
@@ -3534,6 +3715,7 @@ module.exports = async (sock, m) => {
 
             // BOT FEATURE
             case 'mancing': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isGroup) return global.mess("group", m)
                 if (mancing.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Pancingan Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
@@ -3563,6 +3745,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'nambang': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!isGroup) return global.mess("group", m)
                 if (nambang.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Tambangan Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
@@ -3597,6 +3780,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'jual': case 'sell': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (ar[0] === 'ikan') {
                     if (!args[1]) return m.reply(`Harga 1 Ikan 50 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
                     if (args[1].includes('-')) return m.reply(`Example ${prefix + command} ikan 1`)
@@ -3647,6 +3831,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'beli': case 'buy': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (ar[0] === 'limit') {
                     if (!args[1]) return m.reply(`Harga 1 Limit 500 Balance\nExample: ${prefix + command + " " + ar[0]} 10`)
                     if (args[1].includes('-')) return m.reply(`Example ${prefix + command} limit 10`)
@@ -3675,6 +3860,7 @@ module.exports = async (sock, m) => {
             }
             break
             case 'more': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (!q.includes('|')) return m.reply(`Example: ${prefix + command} hello|there`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let kata = String.fromCharCode(8206)
@@ -3683,7 +3869,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'bisakah': {
-                if (!q) return m.reply(`Example: ${prefix + command} kamu memasak ?`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} kamu memasak ?`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 const tanya = ['Bisa','Tidak Bisa','Coba Ulangi','Ngimpi kah?','yakin bisa?']
                 const jawab = tanya[Math.floor(Math.random() * tanya.length)]
@@ -3692,7 +3879,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'kapankah': {
-                if (!q) return m.reply(`Example: ${prefix + command} kamu memasak ?`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} kamu memasak ?`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 const tanya = ['Besok','Lusa','Tadi','4 Hari Lagi','5 Hari Lagi','6 Hari Lagi','1 Minggu Lagi','2 Minggu Lagi','3 Minggu Lagi','1 Bulan Lagi','2 Bulan Lagi','3 Bulan Lagi','4 Bulan Lagi','5 Bulan Lagi','6 Bulan Lagi','1 Tahun Lagi','2 Tahun Lagi','3 Tahun Lagi','4 Tahun Lagi','5 Tahun Lagi','6 Tahun Lagi','1 Abad lagi','3 Hari Lagi','Tidak Akan Pernah']
                 const jawab = tanya[Math.floor(Math.random() * tanya.length)]
@@ -3701,7 +3889,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'apakah': {
-                if (!q) return m.reply(`Example: ${prefix + command} kamu memasak ?`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} kamu memasak ?`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 const tanya = ['Iya','Tidak','Bisa Jadi','Coba Ulangi','Tanyakan Ayam']
                 const jawab = tanya[Math.floor(Math.random() * tanya.length)]
@@ -3710,7 +3899,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'watak': {
-                if (!q) return m.reply(`Example: ${prefix + command} ${senderName}`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} ${senderName}`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 const tanya = ["penyayang","pemurah","Pemarah","Pemaaf","Penurut","Baik","baperan","Baik Hati","penyabar","Uwu","top deh, pokoknya","Suka Membantu"]
                 const jawab = tanya[Math.floor(Math.random() * tanya.length)]
@@ -3719,7 +3909,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'gantengcek': {
-                if (!q) return m.reply(`Example: ${prefix + command} ${senderName}`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} ${senderName}`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 if (q.match(/zein|Zein|ZEIN/)) {
                     const tanya = ['70%','74%','83%','97%','100%','94%','75%','82%']
@@ -3733,7 +3924,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'cantikcek': {
-                if (!q) return m.reply(`Example: ${prefix + command} ${senderName}`)
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} ${senderName}`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 const tanya = ['10% banyak" perawatan ya kak:v\nCanda Perawatan:v','30% Semangat Kaka Merawat Dirinya><','20% Semangat Ya Kaka👍','40% Wahh Kaka><','50% kaka cantik deh><','60% Hai Cantik🐊','70% Hai Ukhty🐊','62% Kakak Cantik><','74% Kakak ni cantik deh><','83% Love You Kakak><','97% Assalamualaikum Ukhty🐊','100% Kakak Pake Susuk ya??:v','29% Semangat Kakak:)','94% Hai Cantik><','75% Hai Kakak Cantik','82% wihh Kakak Pasti Sering Perawatan kan??','41% Semangat:)','39% Lebih Semangat🐊']
                 const jawab = tanya[Math.floor(Math.random() * tanya.length)]
@@ -3742,7 +3934,8 @@ module.exports = async (sock, m) => {
             }
             break
             case 'judi': case 'casino': {
-                if (!q) return m.reply('Mau Taruhan Berapa ?')
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply('Mau Taruhan Berapa ?')
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
 
