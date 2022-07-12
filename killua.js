@@ -1187,7 +1187,6 @@ module.exports = async (sock, m) => {
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/pinterestdl", { url: isUrl(text)[0] }, "apikey"))
                 const zen = getRandom('mp4')
                     ffmpeg(fetch.result)
-                    .audioBitrate(128)
                     .save('./temp/' + zen)
                     .on('end', () => {
                         sock.sendFile(m.from, fs.readFileSync('./temp/' + zen), "", m).then(data => {
@@ -1206,21 +1205,42 @@ module.exports = async (sock, m) => {
             break
             case 'tiktok': {
                 if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} username or url`)
                 if (!isPremium) return global.mess("premium", m)
-                if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
-                let fetch = await fetchUrl(global.api("zenz", "/downloader/musically", { url: isUrl(text)[0] }, "apikey"))
-                let buttons = [
-                    { buttonId: `${prefix}tiktokwm ${text}`, buttonText: {displayText: '► With Watermark'}, type: 1},
-                    { buttonId: `${prefix}tiktokmp3 ${text}`, buttonText: {displayText: '♫ Audio'}, type: 1}
-                ]
-                let buttonMessage = {
-                    video: { url: fetch.result.nowm },
-                    caption: `Download Tiktok From : ${isUrl(text)[0]}`,
-                    footer: config.footer,
-                    buttons: buttons,
-                    headerType: 5
+                if (isUrl(text)) {
+                    let fetch = await fetchUrl(global.api("zenz", "/downloader/musically", { url: isUrl(text)[0] }, "apikey"))
+                    let buttons = [
+                        { buttonId: `${prefix}tiktokwm ${text}`, buttonText: {displayText: '► With Watermark'}, type: 1},
+                        { buttonId: `${prefix}tiktokmp3 ${text}`, buttonText: {displayText: '♫ Audio'}, type: 1}
+                    ]
+                    let buttonMessage = {
+                        video: { url: fetch.result.nowm },
+                        caption: `Download Tiktok From : ${isUrl(text)[0]}`,
+                        footer: config.footer,
+                        buttons: buttons,
+                        headerType: 5
+                    }
+                    sock.sendMessage(m.from, buttonMessage, { quoted: m })
+                } else {
+                    let fetch = await fetchUrl(global.api("zenz", "/downloader/asupantiktok", { query: text }, "apikey"))
+                    let caption = `Random Asupan Tiktok ${text}\n\n`
+                    let i = fetch.result
+                    caption += `⭔ Username : ${i.username}\n`
+                    caption += `⭔ Followers : ${i.followers}\n`
+                    caption += `⭔ Caption : ${i.media.caption}\n`
+        
+                    let buttons = [
+                        {buttonId: `tiktok ${text}`, buttonText: {displayText: '► NEXT'}, type: 1},
+                    ]
+                    let buttonMessage = {
+                        video: { url: i.media.videourl },
+                        caption: caption,
+                        footer: config.footer,
+                        buttons: buttons,
+                        headerType: 5
+                    }
+                    sock.sendMessage(m.from, buttonMessage, { quoted: m })
                 }
-                sock.sendMessage(m.from, buttonMessage, { quoted: m })
             }
             break
             case 'tiktokporn': {
