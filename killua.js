@@ -1136,7 +1136,7 @@ module.exports = async (sock, m) => {
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram", { url:isUrl(text)[0] }, "apikey"))
-                for (let url of fetch.result) sock.sendFile(m.from, url, "", m, { caption: `Download Media From : ${isUrl(text)[0]}` })
+                for (let i of fetch.result) sock.sendFile(m.from, i.url, "", m, { caption: `Download Media From : ${isUrl(text)[0]}` })
             }
             break
             case 'instastory': case 'igstory': {
@@ -3217,9 +3217,9 @@ module.exports = async (sock, m) => {
                 if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/searching/stickersearch", { query: text }, "apikey"))
-                for (let url of fetch.result) {
+                for (let i of fetch.result) {
                     await delay(1000)
-                    sock.sendFile(m.from, url, "", m, { asSticker: true })
+                    sock.sendFile(m.from, i.url, "", m, { asSticker: true })
                 }
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
