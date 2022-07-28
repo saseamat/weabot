@@ -1260,7 +1260,7 @@ module.exports = async (sock, m) => {
                         }
                         sock.sendMessage(m.from, buttonMessage, { quoted: m })
                     } else {
-                        let fetch = await fetchUrl(global.api("zenz", "/downloader/randomtiktok", { query: text }, "apikey"))
+                        let fetch = await fetchUrl(global.api("zenz", "/downloader/randomtiktok", { username: text }, "apikey"))
                         let caption = `Random Video Tiktok\n\n`
                         let i = fetch.result
                         caption += `⭔ Username : ${i.username}\n`
