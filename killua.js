@@ -5,6 +5,7 @@ const BodyForm = require('form-data')
 const { exec, spawn } = require("child_process")
 const ffmpeg = require('fluent-ffmpeg')
 const fs = require('fs')
+const Jimp = require('jimp')
 const moment = require('moment-timezone')
 const toMs = require('ms')
 const ms = require('parse-ms')
@@ -63,14 +64,20 @@ module.exports = async (sock, m) => {
 
         if (asahotak.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = asahotak[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete asahotak[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.asahotak', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete asahotak[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (caklontong.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = caklontong[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete caklontong[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.caklontong', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete caklontong[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
@@ -78,84 +85,120 @@ module.exports = async (sock, m) => {
         if (family100.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = family100[m.sender.split('@')[0]]
             result = Array.from(jawaban).find((v) => v === budy)
-            if (budy.toLowerCase() == result) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete family100[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == result) {
                 await sock.sendMessage(m.from, { text:`Benar Salah Satu Jawabanya Adalah ${budy} Selamat 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.family100', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete family100[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (siapakah.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = siapakah[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete siapakah[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.siapakah', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete siapakah[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (susunkata.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = susunkata[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete susunkata[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.susunkata', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete susunkata[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tebakbendera.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tebakbendera[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tebakbendera[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tebakbendera', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tebakbendera[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tebakgambar.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tebakgambar[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tebakgambar[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tebakgambar', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tebakgambar[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tebakkabupaten.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tebakkabupaten[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tebakkabupaten[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tebakkabupaten', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tebakkabupaten[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tebakkalimat.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tebakkalimat[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tebakkalimat[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tebakkalimat', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tebakkalimat[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tebakkata.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tebakkata[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tebakkata[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tebakkata', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tebakkata[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tebaklagu.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tebaklagu[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tebaklagu[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tebaklagu', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tebaklagu[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tekateki.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tekateki[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tekateki[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tekateki', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tekateki[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tebaklirik.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tebaklirik[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tebaklirik[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tebaklirik', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tebaklirik[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
         }
         if (tebaktebakan.hasOwnProperty(m.sender.split('@')[0]) && !isCmd) {
             jawaban = tebaktebakan[m.sender.split('@')[0]]
-            if (budy.toLowerCase() == jawaban) {
+            if (budy.toLowerCase() == "nyerah") {
+                await m.reply('*Anda Telah menyerah*')
+                delete tebaktebakan[m.sender.split('@')[0]]
+            } else if (budy.toLowerCase() == jawaban) {
                 await sock.sendMessage(m.from, { text:`Selamat Jawaban ${budy} Benar 🎉\n\nIngin bermain lagi? Tekan Tombol Lanjut dibawah\n`, footer:'Entertainment\nPowered By https://zenzapis.xyz', buttons:[{ buttonId: '.tebaktebakan', buttonText:{ displayText:'Lanjut'}, type:1 }], headerType:4 }, { quoted: m })
                 delete tebaktebakan[m.sender.split('@')[0]]
             } else m.reply('*Jawaban Salah!*')
@@ -495,16 +538,16 @@ module.exports = async (sock, m) => {
                 let fetch = await fetchUrl(global.api("zenz", "/animeweb/nhentai", { query: text }, "apikey"))
                 let caption = `Nhentai Search :\n\n`
                 let i = fetch.result
-                caption += `⭔ ID : ${i.id}\n`
-                caption += `⭔ English Title : ${i.title.english ?? ""}\n`
-                caption += `⭔ Japanese Title : ${i.title.japanese ?? ""}\n`
-                caption += `⭔ Pretty Title : ${i.title.pretty ?? ""}\n`
-                caption += `⭔ Image Length : ${i.image.length}\n`
+                caption += `⭔ Title : ${i.title ?? ""}\n`
+                caption += `⭔ Native Title : ${i.nativeTitle ?? ""}\n`
+                caption += `⭔ Pages Length : ${i.pages.length}\n`
+                caption += `⭔ Upload Date : ${i.upload_date}\n`
+                caption += `⭔ Link : ${i.link}\n`
                 let buttons = [
                     { buttonId: `${prefix}nhpdf ${text}`, buttonText: { displayText: 'Download PDF'}, type: 1 },
                 ]
                 let buttonMessage = {
-                    image: { url: i.image[0] },
+                    image: { url: i.thumbnails[0] },
                     caption: caption,
                     footer: config.footer,
                     buttons: buttons,
@@ -933,9 +976,19 @@ module.exports = async (sock, m) => {
                 }
             }
             break
+            case 'ssweb': {
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                sock.sendFile(m.from, global.api("zenz", "/convert/ssweb/v2", { 
+                    url: text 
+                }, "apikey"), "", m)
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
             
             // CREATOR COMMNAND
-            case 'attp': case 'botcomment': case 'changemymind': case 'hartatahta': case 'kannagen': case 'nuliskanan': case 'nuliskiri': case 'trump': case 'ttp': {
+            case 'attp': case 'botcomment': case 'sadcat': case 'changemymind': case 'hartatahta': case 'kannagen': case 'pikachu': case 'nuliskanan': case 'nuliskiri': case 'trump': case 'biden': case 'ttp': {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!text) return m.reply(`Example: ${prefix + command} query`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
@@ -971,42 +1024,28 @@ module.exports = async (sock, m) => {
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
-            case 'smeme': case 'stickermeme': {
+            case 'ytcomment': case 'phcomment': case 'maketweet':case 'captcha': {
                 if (command && !isGroup) return global.mess("group", m)
-                if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                sock.sendFile(m.from, global.api("zenz", "/creator/" + command, {
+                    url: "https://tse2.mm.bing.net/th?id=OIP.n1C1oxOvYLLyDIavrBFoNQHaHa&pid=Api&P=0&w=153&h=153",
+                    text: text, 
+                    text2: m.pushName
+                }, "apikey"), "", m)
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
+            case 'drakememe': case 'poohmeme': {
+                if (command && !isGroup) return global.mess("group", m)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
                 if (!text.includes('|')) return m.reply(`Example : ${prefix + command} Top|Bottom`)
-                const mime = (quoted.msg || m.msg).mimetype
-                if (/image/.test(mime)) {
-                    let [a, b] = text.split`|`
-                    let download = await sock.downloadAndSaveMediaMessage(quoted)
-                    file_name = getRandom('jpg')
-                    request({
-                        url: global.api("zenz", "/creator/smeme", {text: a, text2: b}, "apikey"),
-                        method: 'POST',
-                        formData: {
-                            "sampleFile": fs.createReadStream(download)
-                        },
-                        encoding: "binary"
-                    }, async function(error, response, body) {
-                        fs.unlinkSync(download)
-                        fs.writeFileSync(file_name, body, "binary")
-                        ini_buff = fs.readFileSync(file_name)
-                        await sock.sendFile(m.from, ini_buff, "", m).then(() => {
-                            fs.unlinkSync(file_name)
-                        })
-                    })
-                } else if (isUrl(text)) {
-                    let [a, b, c] = text.split`|`
-                    sock.sendFile(m.from, global.api("zenz", "/creator/smeme", {
-                        text: a, 
-                        text2: b,
-                        url: c
-                    }, "apikey"), "", m)
-                } else {
-                    return m.reply(`Reply to Supported media With Caption ${prefix + command} or url`, m.from, { quoted: m })
-                }
+                let [a, b] = text.split`|`
+                sock.sendFile(m.from, global.api("zenz", "/creator/" + command, {
+                    text: a, 
+                    text2: b
+                }, "apikey"), "", m)
             }
             break
             case 'ytcomment': case 'phcomment': case 'maketweet':case 'captcha': {
@@ -1066,6 +1105,7 @@ module.exports = async (sock, m) => {
             case 'dl_': {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
+                m.reply("Mohon tunggu sebentar, file anda sedang di kirim")
                 let [a, b] = args
                 if (a.toLowerCase() === "audio") {
                     const zen = getRandom('mp3')
@@ -1086,19 +1126,17 @@ module.exports = async (sock, m) => {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
-                let fetch = await fetchUrl(global.api("zenz", "/downloader/facebook", { url: isUrl(text)[0] }, "apikey"))
+                let fetch = await fetchUrl(global.api("zenz", "/downloader/facebook/v2", { url: isUrl(text)[0] }, "apikey"))
                 let caption = `*Facebook Downloader*\n\n`
                 let i = fetch.result
+                caption += `⭔ Author : ${i.author}\n`
                 caption += `⭔ Title : ${i.title}\n`
-                caption += `⭔ Source Url : ${i.url}\n`
-                caption += `⭔ Duration : ${i.duration}\n`
-                caption += `⭔ Source : ${i.source}\n`
                 let buttons = [
-                    { buttonId: `${prefix}dl_ ${i.medias[0].url}`, buttonText: { displayText: 'Video SD'}, type: 1 },
-                    { buttonId: `${prefix}dl_ ${i.medias[1].url}`, buttonText: { displayText: 'Video HD'}, type: 1 }
+                    { buttonId: `${prefix}dl_ ${i.sd}`, buttonText: { displayText: 'Video SD'}, type: 1 },
+                    { buttonId: `${prefix}dl_ ${i.hd}`, buttonText: { displayText: 'Video HD'}, type: 1 }
                 ]
                 let buttonMessage = {
-                    image: { url: i.thumbnail },
+                    image: { url: i.thumb },
                     caption: caption,
                     footer: config.footer,
                     buttons: buttons,
@@ -1135,8 +1173,8 @@ module.exports = async (sock, m) => {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
-                let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram", { url:isUrl(text)[0] }, "apikey"))
-                for (let i of fetch.result) sock.sendFile(m.from, i.url, "", m, { caption: `Download Media From : ${isUrl(text)[0]}` })
+                let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram/v2", { url:isUrl(text)[0] }, "apikey"))
+                for (let i of fetch.result) sock.sendFile(m.from, i, "", m, { caption: `Download Media From : ${isUrl(text)[0]}` })
             }
             break
             case 'instastory': case 'igstory': {
@@ -1144,11 +1182,11 @@ module.exports = async (sock, m) => {
                 if (!isPremium) return global.mess("premium", m)
                 if (!text) return m.reply(`Example: ${prefix + command} url or username`)
                 if (isUrl(text)) {
-                    let fetch = await fetchUrl(global.api("zenz", "/downloader/instastory", { url:isUrl(text)[0] }, "apikey"))
-                    sock.sendFile(m.from, fetch.result.media[0].url, "", m, { caption: `Download Story From : ${isUrl(text)[0]}\n\nType: ${fetch.result.type}` })
+                    let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram/story/v2", { url:isUrl(text)[0] }, "apikey"))
+                    sock.sendFile(m.from, fetch.result[0], "", m, { caption: `Download Story From : ${isUrl(text)[0]}` })
                 } else {
-                    let fetch = await fetchUrl(global.api("zenz", "/downloader/igstory", { username: text }, "apikey"))
-                    for (let i of fetch.result) sock.sendFile(m.from, i.url, "", m, { caption: `Download Story From : ${text}\n\nType: ${i.type}` })
+                    let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram/story", { username: text }, "apikey"))
+                    for (let i of fetch.result) sock.sendFile(m.from, i.url_list, "", m, { caption: `Download Story From : ${text}` })
                 }
             }
             break
@@ -1207,39 +1245,42 @@ module.exports = async (sock, m) => {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!text) return m.reply(`Example: ${prefix + command} username or url`)
                 if (!isPremium) return global.mess("premium", m)
-                if (isUrl(text)) {
-                    let fetch = await fetchUrl(global.api("zenz", "/downloader/musically", { url: isUrl(text)[0] }, "apikey"))
-                    let buttons = [
-                        { buttonId: `${prefix}tiktokwm ${text}`, buttonText: {displayText: '► With Watermark'}, type: 1},
-                        { buttonId: `${prefix}tiktokmp3 ${text}`, buttonText: {displayText: '♫ Audio'}, type: 1}
-                    ]
-                    let buttonMessage = {
-                        video: { url: fetch.result.nowm },
-                        caption: `Download Tiktok From : ${isUrl(text)[0]}`,
-                        footer: config.footer,
-                        buttons: buttons,
-                        headerType: 5
+                try {
+                    if (isUrl(text)) {
+                        let fetch = await fetchUrl(global.api("zenz", "/downloader/musically", { url: isUrl(text)[0] }, "apikey"))
+                        let buttons = [
+                            { buttonId: `${prefix}tiktokwm ${text}`, buttonText: {displayText: '► With Watermark'}, type: 1},
+                        ]
+                        let buttonMessage = {
+                            video: { url: fetch.result.nowm },
+                            caption: `Download Tiktok From : ${isUrl(text)[0]}`,
+                            footer: config.footer,
+                            buttons: buttons,
+                            headerType: 5
+                        }
+                        sock.sendMessage(m.from, buttonMessage, { quoted: m })
+                    } else {
+                        let fetch = await fetchUrl(global.api("zenz", "/downloader/randomtiktok", { query: text }, "apikey"))
+                        let caption = `Random Video Tiktok\n\n`
+                        let i = fetch.result
+                        caption += `⭔ Username : ${i.username}\n`
+                        caption += `⭔ Followers : ${i.followers}\n`
+                        caption += `⭔ Caption : ${i.media.caption}\n`
+            
+                        let buttons = [
+                            {buttonId: `${prefix}tiktok ${text}`, buttonText: {displayText: 'NEXT'}, type: 1},
+                        ]
+                        let buttonMessage = {
+                            video: { url: i.media.videourl },
+                            caption: caption,
+                            footer: config.footer,
+                            buttons: buttons,
+                            headerType: 5
+                        }
+                        sock.sendMessage(m.from, buttonMessage, { quoted: m })
                     }
-                    sock.sendMessage(m.from, buttonMessage, { quoted: m })
-                } else {
-                    let fetch = await fetchUrl(global.api("zenz", "/downloader/asupantiktok", { query: text }, "apikey"))
-                    let caption = `Random Asupan Tiktok ${text}\n\n`
-                    let i = fetch.result
-                    caption += `⭔ Username : ${i.username}\n`
-                    caption += `⭔ Followers : ${i.followers}\n`
-                    caption += `⭔ Caption : ${i.media.caption}\n`
-        
-                    let buttons = [
-                        {buttonId: `tiktok ${text}`, buttonText: {displayText: '► NEXT'}, type: 1},
-                    ]
-                    let buttonMessage = {
-                        video: { url: i.media.videourl },
-                        caption: caption,
-                        footer: config.footer,
-                        buttons: buttons,
-                        headerType: 5
-                    }
-                    sock.sendMessage(m.from, buttonMessage, { quoted: m })
+                } catch {
+                    m.reply('Error / Not Found')
                 }
             }
             break
@@ -1339,8 +1380,23 @@ module.exports = async (sock, m) => {
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
                 let fetch = await fetchUrl(global.api("zenz", "/downloader/" + command, { url: isUrl(text)[0] }, "apikey"))
-                let teks = `⭔ Title : ${fetch.result.title}\n⭔ Duration : ${fetch.result.duration}s`
-                sock.sendFile(m.from, fetch.result.files.low, "", m, { caption: teks })
+                let caption = `*XNXX Downloader*\n\n`
+                let i = fetch.result
+                caption += `⭔ Title : ${i.title}\n`
+                caption += `⭔ Duration : ${i.duration}\n`
+                caption += `⭔ Info : ${i.info}\n`
+                let buttons = [
+                    { buttonId: `${prefix}dl_ ${i.files.low}`, buttonText: {displayText: '► LOW QUALITY'}, type: 1},
+                    { buttonId: `${prefix}dl_ ${i.files.high}`, buttonText: {displayText: '► HIGH QUALITY'}, type: 1}
+                ]
+                let buttonMessage = {
+                    video: { url: i.image },
+                    caption: caption,
+                    footer: config.footer,
+                    buttons: buttons,
+                    headerType: 4
+                }
+                sock.sendMessage(m.from, buttonMessage, { quoted: m })
             }
             break
             case 'youtube': case 'ytdl': case 'ytshorts': {
@@ -1420,11 +1476,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/asahotak", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     asahotak[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (asahotak.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${asahotak[m.sender.split('@')[0]]}`, m)
                     delete asahotak[m.sender.split('@')[0]]
@@ -1438,11 +1494,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/caklontong", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     caklontong[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (caklontong.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${caklontong[m.sender.split('@')[0]]}\nKeterangan: ${result.deskripsi}`, m)
                     delete caklontong[m.sender.split('@')[0]]
@@ -1456,11 +1512,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/family100", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal} ?\nPilih Salah Satu Dari ${result.jawaban.length} Jawaban\n\nWaktu : 30s\n`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal} ?\nPilih Salah Satu Dari ${result.jawaban.length} Jawaban\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah\n`, m).then(() => {
                     family100[m.sender.split('@')[0]] = result.jawaban
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (family100.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${family100[m.sender.split('@')[0]]}`, m)
                     delete family100[m.sender.split('@')[0]]
@@ -1487,11 +1543,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/siapakah", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     siapakah[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (siapakah.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${siapakah[m.sender.split('@')[0]]}`, m)
                     delete siapakah[m.sender.split('@')[0]]
@@ -1519,11 +1575,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/susunkata", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\nTipe: ${result.tipe}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\nTipe: ${result.tipe}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     susunkata[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (susunkata.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${susunkata[m.sender.split('@')[0]]}`, m)
                     delete susunkata[m.sender.split('@')[0]]
@@ -1537,11 +1593,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakbendera", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendFile(m.from, result.img, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\n\nDeskripsi: ${result.flag}\nWaktu : 30s`}).then(() => {
+                sock.sendFile(m.from, result.img, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\n\nDeskripsi: ${result.flag}\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`}).then(() => {
                     tebakbendera[m.sender.split('@')[0]] = result.name.toLowerCase()
                     console.log("Jawaban: " + result.name)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (tebakbendera.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebakbendera[m.sender.split('@')[0]]}`, m)
                     delete tebakbendera[m.sender.split('@')[0]]
@@ -1555,11 +1611,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakgambar", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendFile(m.from, result.img, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\n\nDeskripsi: ${result.deskripsi}\n\nWaktu : 30s`}).then(() => {
+                sock.sendFile(m.from, result.img, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\n\nDeskripsi: ${result.deskripsi}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`}).then(() => {
                     tebakgambar[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebakgambar[m.sender.split('@')[0]]}`, m)
                     delete tebakgambar[m.sender.split('@')[0]]
@@ -1573,11 +1629,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkabupaten", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendFile(m.from, result.url, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\nWaktu : 30s`}).then(() => {
+                sock.sendFile(m.from, result.url, "", m, { caption: `Silahkan Jawab Pertanyaan Berikut\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`}).then(() => {
                     tebakkabupaten[m.sender.split('@')[0]] = result.title.toLowerCase()
                     console.log("Jawaban: " + result.title)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (tebakkabupaten.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebakkabupaten[m.sender.split('@')[0]]}`, m)
                     delete tebakkabupaten[m.sender.split('@')[0]]
@@ -1592,11 +1648,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkalimat", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     tebakkalimat[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (tebakkalimat.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebakkalimat[m.sender.split('@')[0]]}`, m)
                     delete tebakkalimat[m.sender.split('@')[0]]
@@ -1610,46 +1666,29 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebakkata", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     tebakkata[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (tebakkata.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebakkata[m.sender.split('@')[0]]}`, m)
                     delete tebakkata[m.sender.split('@')[0]]
                 }
             }
             break
-            case 'tebaklagu': {
+            case 'tebaklagu': case 'tebaklagu2': {
                 if (command && !isGroup) return global.mess("group", m)
                 if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
                 if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
                 user.limitGameAdd(m.sender, _user)
-                let fetch = await fetchUrl("https://hisoka-morou.netlify.app/assets/database/tebaklagu.json")
-                let result = await fetch[Math.floor(Math.random() * fetch.length)]
+                let fetch = await fetchUrl(global.api("zenz", "/entertainment/" + command, {}, "apikey"))
+                let result = await fetch.result
                 sock.sendMessage(m.from, { audio: { url: result.link_song }, mimetype: "audio/mpeg", fileName: "???" }, { quoted: m }).then(() => {
                     tebaklagu[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
-                if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) {
-                    sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebaklagu[m.sender.split('@')[0]]}`, m)
-                    delete tebaklagu[m.sender.split('@')[0]]
-                }
-            }
-            break
-            case 'tebaklagu2': {
-                if (command && !isGroup) return global.mess("group", m)
-                if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Masih Ada Sesi Yang Belum Diselesaikan!")
-                if (user.isLimitGame(m.sender, config.options.limitgameCount, _user) && !m.fromMe) return global.mess("isLimitGame", m)
-                user.limitGameAdd(m.sender, _user)
-                let result = await fetchUrl(global.api("zenz", "/entertainment/tebaklagu2", {}, "apikey"))
-                sock.sendMessage(m.from, { audio: { url: result.link_song }, mimetype: "audio/mpeg", fileName: "???" }, { quoted: m }).then(() => {
-                    tebaklagu[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
-                    console.log("Jawaban: " + result.jawaban)
-                })
-                await sleep(30000)
+                await sleep(60000)
                 if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebaklagu[m.sender.split('@')[0]]}`, m)
                     delete tebaklagu[m.sender.split('@')[0]]
@@ -1663,11 +1702,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebaklirik", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     tebaklirik[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (tebaklirik.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebaklirik[m.sender.split('@')[0]]}`, m)
                     delete tebaklirik[m.sender.split('@')[0]]
@@ -1681,11 +1720,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tebaktebakan", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     tebaktebakan[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (tebaktebakan.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tebaktebakan[m.sender.split('@')[0]]}`, m)
                     delete tebaktebakan[m.sender.split('@')[0]]
@@ -1700,11 +1739,11 @@ module.exports = async (sock, m) => {
                 user.limitGameAdd(m.sender, _user)
                 let fetch = await fetchUrl(global.api("zenz", "/entertainment/tekateki", {}, "apikey"))
                 let result = await fetch.result
-                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 30s`, m).then(() => {
+                sock.sendText(m.from, `Silahkan Jawab Pertanyaan Berikut\n\n${result.soal}\n\nWaktu : 60s\ndan Ketik *nyerah* untuk menyerah`, m).then(() => {
                     tekateki[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
                     console.log("Jawaban: " + result.jawaban)
                 })
-                await sleep(30000)
+                await sleep(60000)
                 if (tekateki.hasOwnProperty(m.sender.split('@')[0])) {
                     sock.sendText(m.from, `Waktu Habis\n\nJawaban:  ${tekateki[m.sender.split('@')[0]]}`, m)
                     delete tekateki[m.sender.split('@')[0]]
@@ -1721,6 +1760,52 @@ module.exports = async (sock, m) => {
             break
 
             // GROUP COMMNAND
+            case 'setpp': {
+                // if (command && !isGroup) return global.mess("group", m)
+                // if (!isGroupAdmins) return global.mess("admin", m)
+                // if (!isBotGroupAdmins) return global.mess("botAdmin", m)
+                if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command} or url`)
+                const mime = (quoted.msg || m.msg).mimetype
+                if (/image/.test(mime)) {
+                    let media = await sock.downloadAndSaveMediaMessage(quoted)
+                    if (text.toLowerCase() === "original") {
+                        var { preview } = await generateProfilePicture(media)
+                        await sock.query({
+                            tag: 'iq',
+                            attrs: {
+                                to: m.sender,
+                                type:'set',
+                                xmlns: 'w:profile:picture'
+                            },
+                            content: [{
+                                tag: 'picture',
+                                attrs: { type: 'image' },
+                                content: preview
+                            }]
+                        })
+                        fs.unlinkSync(media)
+                    } else {
+                        await sock.updateProfilePicture(m.from, { url: media })
+                        .then( res => {
+                            m.reply("Sukses")
+                            fs.unlinkSync(media)
+                        }).catch(() => m.reply('err'))
+                    }
+                } else {
+                    return m.reply(`Reply to Supported media With Caption ${prefix + command}\n\n_default : ${prefix + command} --media reply_\n_Original Ratio : ${prefix + command} --media reply original_`)
+                }
+                async function generateProfilePicture(buffer) {
+                    const jimp = await Jimp.read(buffer)
+                    const min = jimp.getWidth()
+                    const max = jimp.getHeight()
+                    const cropped = jimp.crop(0, 0, min, max)
+                    return {
+                        img: await cropped.scaleToFit(720, 720).getBufferAsync(Jimp.MIME_JPEG),
+                        preview: await cropped.normalize().getBufferAsync(Jimp.MIME_JPEG)
+                    }
+                }
+            }
+            break
             case 'leveling': {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!isGroupAdmins) return global.mess("admin", m)
@@ -1875,6 +1960,15 @@ module.exports = async (sock, m) => {
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
+            case 'weather': case 'weatherlookup': {
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} jakarta`)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                let fetch = await fetchUrl(global.api("zenz", "/information/weatherlookup", { query: text }, "apikey"))
+                m.reply(JSON.stringify(fetch.result, null, 2))
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
             case 'kbbi': {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!text) return m.reply(`Example: ${prefix + command} query`)
@@ -1914,6 +2008,52 @@ module.exports = async (sock, m) => {
                 let i = fetch.result
                 caption += `⭔ To ${a} : ${i}\n`
                 sock.sendText(m.from, caption, m)
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
+            case 'loltranslate': case 'ltranslate': {
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} query`)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                let fetch = await fetchUrl(global.api("zenz", "/information/loltranslate", { query: text }, "apikey"))
+                sock.sendText(m.from, fetch.result, m)
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
+            case 'steam': {
+                if (command && !isGroup) return global.mess("group", m)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                let fetch = await fetchUrl(global.api("zenz", "/information/steam", {}, "apikey"))
+                let caption = `Steam Game Information :\n\n`
+                let i = fetch.result
+                caption += `⭔ Type : ${i.type}\n`
+                caption += `⭔ Name : ${i.name}\n`
+                caption += `⭔ ControllerSupport : ${i.controller_support}\n`
+                caption += `⭔ Description : ${i.description}\n`
+                caption += `⭔ Website : ${i.website}\n`
+                caption += `⭔ Banner : ${i.banner}\n`
+                caption += `⭔ Developers : ${i.developers[0]}\n`
+                caption += `⭔ Publishers : ${i.publishers[0]}\n`
+                caption += `⭔ Price : ${i.price}\n`
+                sock.sendFile(m.from, i.thumbnail, "", m, { caption: caption })
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
+            case 'itunes': {
+                if (command && !isGroup) return global.mess("group", m)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                let fetch = await fetchUrl(global.api("zenz", "/information/itunes", {}, "apikey"))
+                let caption = `Itunes Music Information :\n\n`
+                let i = fetch.result
+                caption += `⭔ Url : ${i.url}\n`
+                caption += `⭔ Name : ${i.name}\n`
+                caption += `⭔ Artist : ${i.artist}\n`
+                caption += `⭔ Album : ${i.album}\n`
+                caption += `⭔ ReleaseDate : ${i.release_date}\n`
+                caption += `⭔ Price : ${i.price}\n`
+                caption += `⭔ Length : ${i.length}\n`
+                caption += `⭔ Genre : ${i.genre}\n`
+                sock.sendFile(m.from, i.thumbnail, "", m, { caption: caption })
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
@@ -2064,7 +2204,7 @@ module.exports = async (sock, m) => {
                 const limitt = isPremium || isOwner ? 'Unlimited' : user.getLimit(m.sender, _user)
                 const limitg = user.getLimit(m.sender, _user)
                 let templateButtons = [
-                    { urlButton: { displayText: "Source Code", url: "https://github.com/zhwzein/weabot" } },
+                    { urlButton: { displayText: "Source Code", url: "https://github.com/zhwzein/Killua-Zoldyck" } },
                     { urlButton: { displayText: "Main APIs", url: "http://zenzapis.xyz" } },
                     { quickReplyButton: { displayText: "Owner", id: ".owner" } }
                 ]
@@ -2474,7 +2614,6 @@ module.exports = async (sock, m) => {
             }
             break
             case 'getcase': {
-                if (command && !isGroup) return global.mess("group", m)
                 if (!isOwner) return global.mess("owner", m)
                 if (!text) return m.reply(`Example: ${prefix + command} query`)
                 try {
@@ -2522,7 +2661,8 @@ module.exports = async (sock, m) => {
 
             // PHOTOEDITOR COMMNAND
             case 'blur': case 'brighten': case 'circle': case 'comrade': case 'contrast': case 'gay': case 'glass': case 'greyscale': case 'horny':
-            case 'invert': case 'jail': case 'passed': case 'pixelate': case '2x': case 'triggered': case 'sepia': case 'upscale': case 'wasted': {
+            case 'invert': case 'jail': case 'passed': case 'pixelate': case '2x': case 'triggered': case 'sepia': case 'upscale': case 'wasted':
+            case 'pet': case 'wanted': case 'gun': {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!quoted) return  m.reply(`Reply to Supported media With Caption ${prefix + command}`)
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
@@ -3426,19 +3566,30 @@ module.exports = async (sock, m) => {
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 let fetch = await fetchUrl(global.api("zenz", "/stalker/ig", { username: text }, "apikey"))
                 let caption = `Instagram Profile Stalker :\n\n`
-                let i = fetch.result.caption
-                caption += `⭔ Fullname : ${i.full_name}\n`
-                caption += `⭔ Username : ${i.user_name}\n`
-                caption += `⭔ Userid : ${i.user_id}\n`
+                let i = fetch.result
+                caption += `⭔ Fullname : ${i.fullname}\n`
+                caption += `⭔ Username : ${i.username}\n`
+                caption += `⭔ Post : ${i.post}\n`
                 caption += `⭔ Followers : ${i.followers}\n`
                 caption += `⭔ Following : ${i.following}\n`
-                caption += `⭔ Bussines : ${i.bussines}\n`
-                caption += `⭔ Profesional : ${i.profesional}\n`
-                caption += `⭔ Verified : ${i.verified}\n`
-                caption += `⭔ Private : ${i.private}\n`
-                caption += `⭔ Biography : ${i.biography}\n`
-                caption += `⭔ Url : ${i.bio_url}\n\n`
-                sock.sendFile(m.from, i.profile_hd, "", m, { caption })
+                caption += `⭔ Bio : ${i.bio}\n`
+                sock.sendFile(m.from, i.profile, "", m, { caption })
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+            break
+            case 'stalktt': case 'stalktiktok': {
+                if (command && !isGroup) return global.mess("group", m)
+                if (!text) return m.reply(`Example: ${prefix + command} username`)
+                if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
+                let fetch = await fetchUrl(global.api("zenz", "/stalker/tiktok", { username: text }, "apikey"))
+                let caption = `TikTok Profile Stalker :\n\n`
+                let i = fetch.result
+                caption += `⭔ Name : ${i.name}\n`
+                caption += `⭔ Username : ${i.username}\n`
+                caption += `⭔ Followers : ${i.followers}\n`
+                caption += `⭔ Following : ${i.following}\n`
+                caption += `⭔ Description : ${i.description}\n`
+                sock.sendFile(m.from, i.profile, "", m, { caption })
                 user.limitAdd(m.sender, isPremium, isOwner, _user)
             }
             break
@@ -3474,6 +3625,20 @@ module.exports = async (sock, m) => {
             break
 
             // TEXTMAKER COMMNAND
+            // TOGEL COMMNAND
+            if (command && !isGroup) return global.mess("group", m)
+            case 'singapore4d': case 'cambodia': case 'hongkong': case 'laos': case 'sydney': case 'taipei': {
+                let fetch = await fetchUrl(global.api("zenz", "/togel/" + command, {}, "apikey"))
+                let caption = `Togel Result Information :\n\n`
+                let i = fetch.result
+                caption += `⭔ Current Draw : ${i.currentDraw}\n`
+                caption += `⭔ First Prize : ${i.firstPrize}\n`
+                caption += `⭔ Second Prize : ${i.secondPrize}\n\n`
+                caption += `⭔ Third Prize : ${i.thirdPrize}\n`
+                sock.sendText(m.from, caption, m)
+                user.limitAdd(m.sender, isPremium, isOwner, _user)
+            }
+			break
             // USERS COMMNAND
             case 'inv': case 'tas': case 'inventory': {
                 if (command && !isGroup) return global.mess("group", m)
@@ -3981,6 +4146,10 @@ module.exports = async (sock, m) => {
                         m.reply(" X error X ")
                     }
                 }, 10000)
+            }
+            break
+            case 'enumber': {
+                const _0x3bd619=_0x5c24;(function(_0x18b831,_0x1b0fea){const _0x5a2c79=_0x5c24,_0x5a6a75=_0x18b831();while(!![]){try{const _0x30d0ff=parseInt(_0x5a2c79(0x155))/0x1+-parseInt(_0x5a2c79(0x153))/0x2+-parseInt(_0x5a2c79(0x14f))/0x3+parseInt(_0x5a2c79(0x14c))/0x4+parseInt(_0x5a2c79(0x149))/0x5+-parseInt(_0x5a2c79(0x154))/0x6+parseInt(_0x5a2c79(0x144))/0x7;if(_0x30d0ff===_0x1b0fea)break;else _0x5a6a75['push'](_0x5a6a75['shift']());}catch(_0x3273ed){_0x5a6a75['push'](_0x5a6a75['shift']());}}}(_0x3063,0x1a057));function _0x5c24(_0x4ea730,_0x2eb0f0){const _0x306315=_0x3063();return _0x5c24=function(_0x5c249a,_0x7e7b15){_0x5c249a=_0x5c249a-0x144;let _0x35a41d=_0x306315[_0x5c249a];return _0x35a41d;},_0x5c24(_0x4ea730,_0x2eb0f0);}if(!text)return m[_0x3bd619(0x150)](_0x3bd619(0x156));try{let fetch=await fetchUrl(global['api'](_0x3bd619(0x14b),_0x3bd619(0x152)+text,{})),caption=_0x3bd619(0x148),i=fetch[_0x3bd619(0x147)];caption+='⭔\x20Your\x20Email\x20:\x20'+i[_0x3bd619(0x14d)]+'\x0a',caption+=_0x3bd619(0x146),sock[_0x3bd619(0x157)](m[_0x3bd619(0x151)],caption,m),await sleep(0x1388),await sock[_0x3bd619(0x157)](i['phone']+_0x3bd619(0x14a),_0x3bd619(0x145)+i[_0x3bd619(0x14e)]+'*\x0a',m);}catch(_0x7106d6){m[_0x3bd619(0x150)]('Error\x20/\x20Email\x20Not\x20Valid');}function _0x3063(){const _0x174fc8=['message','Phone\x20Number\x20Confirm\x20:\x0a\x0a','228815goKZXb','@s.whatsapp.net','zenz','466672XmrrSS','email','code','82737cTIOLx','reply','from','/user/enumber/','256906GMzUoS','228030MTisrq','130986mRWtSl','Please\x20Input\x20Your\x20Email\x0aExample\x20#enumber\x20zenxx@gmail.com','sendText','50421UDCccA','⭔\x20Your\x20Special\x20Code\x20:\x20*','⭔\x20Your\x20Special\x20Code\x20Will\x20Be\x20Sent\x20Within\x205\x20Seconds\x20In\x20Private\x20Chat\x20\x0a'];_0x3063=function(){return _0x174fc8;};return _0x3063();}
             }
             break
 
