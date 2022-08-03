@@ -1173,7 +1173,7 @@ module.exports = async (sock, m) => {
                 if (command && !isGroup) return global.mess("group", m)
                 if (!isPremium) return global.mess("premium", m)
                 if (!isUrl(text)) return m.reply(`Example: ${prefix + command} url`)
-                let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram/v2", { url:isUrl(text)[0] }, "apikey"))
+                let fetch = await fetchUrl(global.api("zenz", "/downloader/instagram", { url:isUrl(text)[0] }, "apikey"))
                 for (let i of fetch.result) sock.sendFile(m.from, i, "", m, { caption: `Download Media From : ${isUrl(text)[0]}` })
             }
             break
@@ -1559,7 +1559,7 @@ module.exports = async (sock, m) => {
                 if (!text) return m.reply('Mau Nanya Apa ?')
                 if (user.isLimit(m.sender, isPremium, isOwner, config.options.limitCount, _user) && !m.fromMe) return global.mess("isLimit", m)
                 try {
-                    let fetch = await fetchUrl(global.api("zenz", "/entertainment/simisimi", { text: encodeURIComponent(text) }, "apikey"))
+                    let fetch = await fetchUrl(global.api("zenz", "/entertainment/simisimi" || "/entertainment/simisimi/v2", { text: text }, "apikey"))
                     result = fetch.result.message
                     sock.sendText(m.from, result, m)
                     user.limitAdd(m.sender, isPremium, isOwner, _user)
