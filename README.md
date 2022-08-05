@@ -1,6 +1,7 @@
-<p align="center">
-<img src="[https://i.pinimg.com/736x/ff/87/b7/ff87b70e9c9dea4d9ca32c9538a81c3b.jpg](https://user-images.githubusercontent.com/97988840/156468495-58f662e6-959a-4121-87f7-8ea9cba47f03.gif)" alt="nz" width="350"/>
-</p>
+<h1 align="center">
+<div align="center">
+<a href="https://github.com/Chey-san/"><img src="https://user-images.githubusercontent.com/97988840/156468495-58f662e6-959a-4121-87f7-8ea9cba47f03.gif"
+" alt="chitoge" border="0"></a>
 
 ## Killua-Zoldyck
 
